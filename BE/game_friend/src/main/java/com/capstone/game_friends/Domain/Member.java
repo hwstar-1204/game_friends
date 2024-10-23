@@ -3,7 +3,6 @@ package com.capstone.game_friends.Domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(nullable = false)
@@ -32,6 +31,11 @@ public class Member {
 
     @Enumerated(EnumType.STRING) // Enum 값이 DB에서 문자열 형태로 저장되게 함.
     private Role role;
+
+    // SummonerInfo와 1:1 관계 설정
+    @OneToOne(cascade = CascadeType.ALL) // CascadeType 설정
+    @JoinColumn(name = "puuId") // 외래 키 설정
+    private SummonerInfo summonerInfo;
 
     @CreatedDate
     @Column

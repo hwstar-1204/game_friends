@@ -7,13 +7,19 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true) // 정의되지 않은 필드를 무시
 public class SummonerResponseDTO {
-    private String accountId;
-    private int profileIconId;
-    private long revisionDate;
-    private String id;
-    private String puuid;
-    private long summonerLevel;
+    private int profileIconId; // 1번
+    private long revisionDate; // 1번
+    private String id; // 1번
+    private String puuId; // 1번
+    private long summonerLevel; // 1번
+    private String leagueId;
+    private String queueType;
+    private String tier;
+    private String rank;
+    private int leaguePoints;
+    private int wins;
+    private int losses;
 }
