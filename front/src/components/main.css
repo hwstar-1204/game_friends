@@ -1,59 +1,9 @@
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #121212;
-  font-family: Arial, sans-serif;
-  color: #e0e0e0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.main-header {
-  width: 100vw;
-  padding: 20px 20px;
-  background-color: #1e1e1e;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #333;
-  box-sizing: border-box;
-  margin-top: 0;
-}
-
-.logo {
-  flex: 1;
-  text-align: left;
-}
-
-.logo img {
-  height: 40px;
-  object-fit: contain;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-}
-
-.profile-icon {
-  width: 120px;
-  height: 40px;
-  background-color: #007bff;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 16px;
-  border: none;
-}
+/* main.css */
 
 .search-bar-container {
   display: flex;
   width: 800px;
+  height: 60px;
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
@@ -128,23 +78,11 @@ body {
   box-sizing: border-box;
 }
 
-.main-contents {
-  display: flex;
-  flex: 1;
-  gap: 20px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
 .main-contents-left {
-  flex: 3;
+  flex: 4;
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.main-contents-right {
-  flex: 1;
 }
 
 .banner {
@@ -155,30 +93,6 @@ body {
   font-size: 18px;
   border-radius: 8px;
   color: #ffffff;
-}
-
-.friend-list {
-  background-color: #1e1e1e;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 8px;
-}
-
-.friend-list h3 {
-  margin-top: 0;
-  color: #ffffff;
-}
-
-.friend-list ul {
-  list-style: none;
-  padding: 0;
-}
-
-.friend-list li {
-  margin-bottom: 10px;
-  color: #e0e0e0;
 }
 
 .player-cards {
