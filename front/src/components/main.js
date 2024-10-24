@@ -13,6 +13,15 @@ function MainPage() {
       { name: '친구 1', status: 'online' },
       { name: '친구 2', status: 'in-game' },
       { name: '친구 3', status: 'offline' },
+      { name: '친구 4', status: 'in-game' },
+      { name: '친구 5', status: 'offline' },
+      { name: '친구 6', status: 'offline' },
+      { name: '친구 7', status: 'in-game' },
+      { name: '친구 8', status: 'offline' },
+      { name: '친구 9', status: 'offline' },
+      { name: '친구 10', status: 'online' },
+      { name: '친구 11', status: 'in-game' },
+      { name: '친구 12', status: 'in-game' },
     ]);
   }, []);
 
@@ -39,7 +48,7 @@ function MainPage() {
               type="text"
               id="player-search"
               className="search-bar"
-              placeholder="플레이어 이름 + #KR1"
+              placeholder="플레이어 이름 + #태그"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
