@@ -1,3 +1,5 @@
+// friends.js
+
 import React, { useEffect, useState } from 'react';
 import './friends.css';
 
@@ -6,9 +8,16 @@ function FriendList({ friendsData, onChat }) {
   const [tooltip, setTooltip] = useState({ visible: false, text: '', x: 0, y: 0 });
 
   useEffect(() => {
-    // 데이터베이스에서 전달된 친구 데이터를 설정합니다.
     if (friendsData) {
-      setFriends(friendsData);
+      const sortedFriends = [...friendsData].sort((a, b) => {
+        const statusOrder = {
+          'online': 1,
+          'in-game': 2,
+          'offline': 3
+        };
+        return statusOrder[a.status] - statusOrder[b.status];
+      });
+      setFriends(sortedFriends);
     }
   }, [friendsData]);
 
@@ -18,7 +27,7 @@ function FriendList({ friendsData, onChat }) {
       visible: true,
       text: status === 'online' ? '온라인' : status === 'in-game' ? '게임 중' : '오프라인',
       x: clientX,
-      y: clientY - 30, // 커서 위에 툴팁이 표시되도록 y 좌표를 조정합니다.
+      y: clientY - 30,
     });
   };
 

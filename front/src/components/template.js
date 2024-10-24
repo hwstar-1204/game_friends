@@ -10,6 +10,7 @@ function Template({ children, friendsData }) {
   const handleChat = (friendName) => {
     if (chatWindow && !chatWindow.closed) {
       chatWindow.location.href = `/chat?friend=${friendName}`;
+      chatWindow.focus(); // 채팅창을 최상위로 가져옴
     } else {
       const newChatWindow = window.open(
         `/chat?friend=${friendName}`,
@@ -17,8 +18,10 @@ function Template({ children, friendsData }) {
         'width=400,height=600,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes'
       );
       setChatWindow(newChatWindow);
+      newChatWindow.focus(); // 새 창을 열 때도 포커스
     }
   };
+  
 
   return (
     <div className="main-container">
