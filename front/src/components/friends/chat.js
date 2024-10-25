@@ -43,12 +43,19 @@ function ChatWindow({ friendName, friendTier }) {
     <div className="chat-container">
       <div className="chat-header">
         <div>
-          <div className="profile-image" style={{ backgroundImage: `url(${friendImageUrl || ''})` }}></div>
+          <div
+            className="profile-image"
+            style={{ 
+              backgroundImage: `url(${friendImageUrl  ? friendImageUrl  : '/img/user.png'})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          ></div>
           <div className="profile-details">
             <span>{friendName}</span>
           </div>
         </div>
-        <div className={`friend-tier tier-${friendTier}`}></div>
+        <img src={`/img/tiers/${friendTier}.png`} alt="티어 이미지" className="friend-tier" />
       </div>
       <div className="chat-messages">
         {messages.map((message, index) => (

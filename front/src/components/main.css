@@ -86,30 +86,98 @@
 }
 
 .banner {
-  background-color: #333;
-  height: 40%;
-  padding: 40px;
-  text-align: center;
+  height: 300px;
+  width: 1450px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.player-cards-banner {
+  height: 20px;
+  text-align: left;
   font-size: 18px;
   border-radius: 8px;
   color: #ffffff;
+  margin-bottom: 20px;
 }
 
-.player-cards {
-  background-color: #1e1e1e;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  height: 100%;
-  box-sizing: border-box;
-  border-radius: 8px;
+.player-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 .player-card {
-  background-color: #333;
+  background: linear-gradient(45deg, #898989, #313131);
+  width: 18%; /* 5개 가로로 배치 */
   padding: 20px;
-  margin-bottom: 20px;
   border-radius: 8px;
-  border: 1px solid #444;
+  box-sizing: border-box;
   text-align: center;
   color: #ffffff;
+  position: relative;
+  border-left: 4px solid #00b32d;
+  border-right: 4px solid #00b32d;
+}
+
+.player-profile {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #333333;
+  margin: 0 auto 10px;
+  background-size: cover;
+  background-position: center;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.player-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.player-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+  display: inline;
+}
+
+.player-tier {
+  width: 40px;
+  height: 40px;
+  display: inline;
+}
+
+.player-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.player-button {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.player-button:hover {
+  background-color: #0056b3;
 }

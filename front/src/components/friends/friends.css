@@ -42,7 +42,6 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background-color: #444;
     margin-right: 20px;
     flex-shrink: 0;
 }
@@ -68,7 +67,7 @@
     background-color: #6c757d;
 }
 
-  
+
 .friend-info {
     display: flex;
     flex-direction: column;
@@ -76,17 +75,25 @@
     justify-content: center;
     margin-bottom: 20px;
 }
-  
+
+.friend-info-row {
+    display: flex;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
 .friend-name {
     font-size: 18px;
     font-weight: bold;
     margin: 0;
     color: #ffffff;
+    margin-left: 20px;
 }
   
 .friend-tier {
-    font-size: 16px;
-    color: #b0b0b0;
+    width: 30px;
+    height: 30px;
+    display: inline;
 }
   
 .friend-actions {
@@ -98,158 +105,15 @@
 }
   
 .friend-button {
-    padding: 0 15px;/* friends.css */
-
-    .friend-list {
-        background-color: #1e1e1e;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        height: 100%;
-        box-sizing: border-box;
-        border-radius: 8px;
-        overflow-y: auto;
-    }
-    
-    .friend-list h3 {
-        margin-top: 0;
-        color: #ffffff;
-        font-weight: bold;
-    }
-    
-    .friend-list ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .friend-list li {
-        display: flex;
-        align-items: center;
-        padding: 20px;
-        margin-bottom: 10px;
-        background-color: #2a2a2a;
-        border-radius: 8px;
-        color: #e0e0e0;
-        position: relative;
-    }
-    
-    .friend-list li.online {
-        border-left: 4px solid #28a745;
-    }
-    
-    .friend-list li.in-game {
-        border-left: 4px solid #007bff;
-    }
-    
-    .friend-list li.offline {
-        border-left: 4px solid #6c757d;
-        color: #6c757d;
-    }
-    
-    .friend-profile {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background-color: #444;
-        margin-right: 20px;
-        flex-shrink: 0;
-    }
-    
-    .friend-status {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        margin-top: 0;
-        background-color: #ff0000;
-    }
-    
-    .friend-info {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-    
-    .friend-info-2 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-    
-    .friend-name {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 0;
-        color: #ffffff;
-    }
-    
-    .friend-tier {
-        font-size: 16px;
-        color: #b0b0b0;
-    }
-    
-    .friend-actions {
-        display: flex;
-        gap: 5px;
-        align-items: center;
-    }
-    
-    .friend-button {
-        padding: 0 15px;
-        font-size: 16px;
-        color: #ffffff;
-        background-color: #007bff;
-        border: none;
-        height: 30px;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    
-    .friend-button:hover {
-        background-color: #0056b3;
-    }
-    
-    /* 스크롤바 스타일링 */
-    .friend-list::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    .friend-list::-webkit-scrollbar-thumb {
-        background-color: #444;
-        border-radius: 4px;
-    }
-    
-    .friend-list::-webkit-scrollbar-track {
-        background-color: #1e1e1e;
-    }
-    
-    @media (max-width: 768px) {
-        .friend-list li {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-    
-        .friend-info-2 {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-    
-        .friend-actions {
-            margin-top: 10px;
-        }
-    }
-    
-    font-size: 16px;
+    padding: 5px 10px;
+    font-size: 14px;
     color: #ffffff;
-    background-color: #3d4956;
+    background-color: #007bff;
     border: none;
-    height: 30px;
     border-radius: 4px;
     cursor: pointer;
-}
-  
+  }
+
 .friend-button:hover {
     background-color: #0056b3;
 }

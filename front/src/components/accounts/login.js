@@ -14,7 +14,8 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-logo">
-        <img src="/img/logo.png" onClick={() => window.location.href = '/'} alt="웹 페이지 로고" style={{ height: '40px', width: 'auto', cursor: 'pointer' }} />
+        <img src="/img/logo.png" onClick={() => window.location.href = '/'} alt="웹 페이지 로고" style={{ height: '60px', width: 'auto', cursor: 'pointer' }} />
+        <h2>Random Game Friends</h2>
       </div>
 
       <div className="login-contents">

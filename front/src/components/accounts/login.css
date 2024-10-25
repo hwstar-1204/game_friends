@@ -28,6 +28,14 @@ body {
   position: fixed;
   top: 20px;
   left: 20px;
+  display: flex;
+  flex: 1;
+  text-align: left;
+  font-size: 15px;
+}
+
+.login-logo h2 {
+  margin-left: 20px;
 }
 
 .login-logo img {
