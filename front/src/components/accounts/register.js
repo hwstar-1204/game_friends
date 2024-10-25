@@ -1,3 +1,5 @@
+// register.js
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './register.css';
@@ -12,7 +14,8 @@ function RegisterPage() {
   return (
     <div className="register-container">
       <div className="register-logo">
-        <img src="/img/logo.png" onClick={() => window.location.href = '/'} alt="웹 페이지 로고" style={{ height: '40px', width: 'auto', cursor: 'pointer' }} />
+        <img src="/img/logo.png" onClick={() => window.location.href = '/'} alt="웹 페이지 로고" style={{ height: '60px', width: 'auto', cursor: 'pointer' }} />
+        <h2>Random Game Friends</h2>
       </div>
       <div className="register-left">
         <h2>랜덤 매칭 ID를 생성하세요.</h2>

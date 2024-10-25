@@ -44,18 +44,23 @@ function FriendList({ friendsData, onChat }) {
             <li key={index} className={friend.status}>
               <div
                 className="friend-profile"
-                style={{ backgroundImage: `url(${friend.profileImage})` }}
+                style={{ 
+                  backgroundImage: `url(${friend.profileImage ? friend.profileImage : '/img/user.png'})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
               ></div>
+
               <div className="friend-info">
-                <div className="friend-info-2">
+                <div className="friend-info-row">
+                  <img src={`/img/tiers/${friend.tier}.png`} alt="티어 이미지" className="friend-tier" />
                   <p className="friend-name">{friend.name}</p>
-                  <p className="friend-tier">{friend.tier}</p>
                 </div>
                 <div className="friend-actions">
                   <button className="friend-button">전적 보기</button>
                   <button
                     className="friend-button"
-                    onClick={() => onChat(friend.name)}
+                    onClick={() => onChat(friend.name, friend.tier)}
                   >
                     채팅
                   </button>

@@ -23,8 +23,14 @@ body {
 }
 
 .logo {
+    display: flex;
     flex: 1;
     text-align: left;
+    font-size: 15px;
+}
+
+.logo h2 {
+    margin-left: 20px;
 }
 
 .logo img {
