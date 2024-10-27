@@ -41,8 +41,8 @@ public class SummonerInfo {
     @Column(name = "tier")
     private String tier;
 
-    @Column(name = "rank")
-    private String rank;
+    @Column(name = "summoner_rank")
+    private String summonerRank;
 
     @Column(name = "league_points")
     private int leaguePoints;
@@ -65,7 +65,7 @@ public class SummonerInfo {
                 .leagueId(responseDTO.getLeagueId())
                 .queueType(responseDTO.getQueueType())
                 .tier(responseDTO.getTier())
-                .rank(responseDTO.getRank())
+                .summonerRank(responseDTO.getRank())
                 .leaguePoints(responseDTO.getLeaguePoints())
                 .wins(responseDTO.getWins())
                 .losses(responseDTO.getLosses())

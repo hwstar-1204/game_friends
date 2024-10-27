@@ -1,6 +1,8 @@
 package com.capstone.game_friends.Service;
 
+import com.capstone.game_friends.DTO.MemberResponseDTO;
 import com.capstone.game_friends.Domain.Member;
+import com.capstone.game_friends.Repository.FriendsRepository;
 import com.capstone.game_friends.Repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,11 +14,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
+    private final FriendsRepository friendsRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -33,5 +39,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                 member.getPassword(),
                 Collections.singleton(grantedAuthority)
         );
+    }
+
+    public List<MemberResponseDTO> getFriends(Long userId){
+
+        Member member = memberRepository.findById(userId).orElseThrow();
+
+        return friendsRepository.findAcceptedFriendIdsByUserId(member).stream()
+                .map(MemberResponseDTO::of)
+                .collect(Collectors.toList());
+
     }
 }
