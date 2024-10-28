@@ -18,7 +18,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${SERVER_URL}auth/signup`, {
+      const response = await fetch(`${SERVER_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
