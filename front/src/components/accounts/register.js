@@ -61,22 +61,23 @@ function RegisterPage() {
           
           <div className="input-group">
             <label htmlFor="email">이메일:</label>
-            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)}
+            placeholder="이메일을 입력하세요" required />
           </div>
           
           <div className="input-group">
             <label htmlFor="password">비밀번호:</label>
-            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" required />
           </div>
           
           <div className="input-group">
             <label htmlFor="confirm-password">비밀번호 확인:</label>
-            <input type="password" id="confirm-password" name="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input type="password" id="confirm-password" name="confirm-password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="비밀번호 재입력하세요" required />
           </div>
 
           <div className="input-group">
             <label htmlFor="nickname">닉네임:</label>
-            <input type="text" id="nickname" name="nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} required />
+            <input type="text" id="nickname" name="nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="닉네임을 입력하세요"required />
           </div>
 
           <button type="submit" className="register-button">계속하기</button>

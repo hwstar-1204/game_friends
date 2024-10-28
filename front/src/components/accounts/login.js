@@ -49,11 +49,11 @@ function LoginPage() {
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">이메일:</label>
-            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일을 입력하세요" required />
           </div>
           <div className="input-group">
             <label htmlFor="password">비밀번호:</label>
-            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" required />
           </div>
           <button type="submit" className="login-button">로그인</button>
           <button type="button" className="register-button" onClick={handleRegisterClick}>회원가입</button>
