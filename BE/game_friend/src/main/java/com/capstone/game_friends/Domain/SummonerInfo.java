@@ -11,7 +11,7 @@ import lombok.*;
 @Builder // 빌더 패턴 제공
 @AllArgsConstructor // 모든 필드를 파라미터로 받는 생성자를 자동 생성
 @NoArgsConstructor // 파라미터가 없는 기본 생성자를 자동 생성
-public class SummonerInfo {
+public class SummonerInfo extends SummonerResponseDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,7 +59,7 @@ public class SummonerInfo {
         return SummonerInfo.builder()
                 .profileIconId(responseDTO.getProfileIconId())
                 .revisionDate(responseDTO.getRevisionDate())
-                .summonerId(responseDTO.getId())
+                .summonerId(responseDTO.getSummonerId())
                 .puuId(responseDTO.getPuuId())
                 .summonerLevel(responseDTO.getSummonerLevel())
                 .leagueId(responseDTO.getLeagueId())
