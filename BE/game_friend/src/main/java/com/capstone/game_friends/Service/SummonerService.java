@@ -52,6 +52,7 @@ public class SummonerService {
             return null;
         }
     }
+
     public SummonerResponseDTO getSummonerId(String puuId){
 
         SummonerResponseDTO result;
