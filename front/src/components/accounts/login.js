@@ -1,14 +1,13 @@
 /* login.js */
-import config from "../../config.js";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import apiClient from '../../utils/api';
 
 function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const SERVER_URL = config.SERVER_URL;  
 
 
   const handleRegisterClick = () => {
@@ -18,22 +17,16 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${SERVER_URL}/auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        navigate('/');
-      } else {
-        // Handle login error
-        console.error('로그인 실패');
-      }
+      const response = await apiClient.post('/auth/login', { email, password });
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
+      
+      navigate('/');
+      alert('로그인 성공');
+      console.log(response);
     } catch (error) {
-      console.error('Error:', error);
+      alert('로그인 실패');
+      console.error('로그인 오류:', error);
     }
   };
 
