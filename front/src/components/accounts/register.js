@@ -1,7 +1,6 @@
-// register.js
-import config from "../../config.js";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../../utils/api';
 import './register.css';
 
 function RegisterPage() {
@@ -10,7 +9,6 @@ function RegisterPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [nickname, setNickname] = useState('');
-  const SERVER_URL = config.SERVER_URL;  
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -24,23 +22,23 @@ function RegisterPage() {
     }
 
     try {
-      const response = await fetch(`${SERVER_URL}/auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', 
-        },
-        body: JSON.stringify({ email, password, nickname, role: "ROLE_USER"}),
+      const response = await apiClient.post('/auth/signup', {
+        email: email.trim(),
+        password: password,
+        nickname: nickname.trim(),
+        role: "ROLE_USER"
       });
 
-      if (response.ok) {
-        navigate('/login');
-      } else {
-        alert('Registration failed');
-      }
-      
+      console.log(response);
+      alert('회원가입이 완료되었습니다.');
+      navigate('/login');
+
     } catch (error) {
-      console.error('Error:', error);
-      alert('Failed to fetch. Please check your network connection and try again.');
+      if (error.response && error.response.data) {
+        alert(error.response.data.message || '회원가입에 실패했습니다.');
+      } else {
+        alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      }
     }
   };
 
