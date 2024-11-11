@@ -15,7 +15,7 @@ public class SummonerInfo extends SummonerResponseDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
     @Column(name = "puu_id")
     private String puuId;
