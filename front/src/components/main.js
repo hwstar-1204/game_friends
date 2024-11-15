@@ -18,7 +18,7 @@ function MainPage() {
     };
     fetchFriendsList();
 
-    setFriendsData([
+    setFriendsData([  // 친구 데이터 예시 (추후 삭제 예정)
       { name: '친구 1', status: 'online', tier: 'iron', profileImage: '' },
       { name: '친구 2', status: 'in-game', tier: 'bronze', profileImage: '' },
       { name: '친구 3', status: 'offline', tier: 'silver', profileImage: '' },

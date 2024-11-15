@@ -6,8 +6,8 @@ import './profile.css';
 function ProfilePage() {
     const [mySummonerInfo, setMySummonerInfo] = useState(null);
     // 게임 닉네임, 태그라인 데이터를 
-    const gameName = "Quad";  // 게임 닉네임
-    const tagLine = "123";    // 태그라인
+    const gameName = "Quad";  // 롤 게임 닉네임
+    const tagLine = "123";    // 태그라인 (# 제외)
     
     useEffect(() => {
         const fetchMyProfile = async () => {
