@@ -39,7 +39,7 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
@@ -48,8 +48,7 @@ public class SummonerService {
             return node.get("puuid").asText();
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("API 호출 실패", e);
         }
     }
 
@@ -65,7 +64,7 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
@@ -74,15 +73,21 @@ public class SummonerService {
             return result;
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("API 호출 실패", e);
         }
     }
 
     public SummonerResponseDTO getSummonerInfo(String gameName, String tagLine, Member member){
 
         String puuId = getPuuId(gameName, tagLine);
+        if (puuId == null) {
+            throw new RuntimeException("소환사를 찾을 수 없습니다.");
+        }
+        
         SummonerResponseDTO result = getSummonerId(puuId);
+        if (result == null) {
+            throw new RuntimeException("소환사 정보를 가져올 수 없습니다.");
+        }
 
         String serverUrl = "https://kr.api.riotgames.com";
 
@@ -92,12 +97,20 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
             JsonNode node = objectMapper.readTree(jsonResponse);
+            
+            if (node.isEmpty()) {  // 소환사 리그 정보가 없는 경우
+                result.setPuuId(puuId);
+                member.setSummonerInfo(SummonerInfo.Info(result));
+                memberRepository.save(member);
+                return result;
+            }
+
             SummonerResponseDTO leagueInfo = objectMapper.treeToValue(node.get(0), SummonerResponseDTO.class);
 
             result.setPuuId(puuId);
@@ -115,8 +128,7 @@ public class SummonerService {
             return result;
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("리그 정보를 가져오는데 실패했습니다.", e);
         }
     }
 }
