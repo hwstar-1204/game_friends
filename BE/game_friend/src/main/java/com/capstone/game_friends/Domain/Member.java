@@ -6,8 +6,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity // JPA 엔티티 임을 선언
 @Getter
@@ -31,12 +29,11 @@ public class Member {
     @Column
     private String nickname;
 
-    @Enumerated(EnumType.STRING) // Enum 값이 DB에서 문자열 형태로 저장되게 함.
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    // SummonerInfo와 1:1 관계 설정
     @OneToOne(cascade = CascadeType.ALL) // CascadeType 설정
-    @JoinColumn(name = "puuId") // 외래 키 설정
+    @JoinColumn(name = "puuid") // 외래 키 설정
     private SummonerInfo summonerInfo;
 
     @CreatedDate
