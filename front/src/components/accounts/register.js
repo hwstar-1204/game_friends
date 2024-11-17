@@ -25,7 +25,7 @@ function RegisterPage() {
         <form>
           <div className="input-group">
             <label htmlFor="username">아이디:</label>
-            <input type="text" id="username" name="username" required />
+            <input type="text" id="username" name="username" placeholder="이메일 아이디를 입력하세요." required />
           </div>
           <div className="input-group">
             <label htmlFor="password">비밀번호:</label>

@@ -1,0 +1,65 @@
+/* record.css */
+
+.record-page {
+  display: flex;
+  flex: 4;
+  background-color: #121212;
+  color: white;
+  gap: 20px;
+}
+
+.record-left {
+    width: 500px;
+}
+
+.record-right {
+    display: flex;
+    width: 100%;
+}
+
+.recent-games {
+    width: 100%;
+}
+
+.rank-games, .free-games, .recent-games {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 10px;
+}
+
+.rank-games h3, .free-games h3, .recent-games h3 {
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+.rank-games ul, .free-games ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rank-games li, .free-games li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
+}
+
+.recent-games .game {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #2e2e2e;
+  border-radius: 5px;
+}
+
+.recent-games .game.win {
+  border-left: 5px solid #4caf50;
+}
+
+.recent-games .game.lose {
+  border-left: 5px solid #f44336;
+}
+
+.recent-games p {
+  margin: 5px 0;
+}

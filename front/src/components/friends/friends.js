@@ -1,9 +1,8 @@
 // friends.js
-
 import React, { useEffect, useState } from 'react';
 import './friends.css';
 
-function FriendList({ friendsData, onChat }) {
+function FriendList({ friendsData, onChat, onRecord }) {
   const [friends, setFriends] = useState([]);
   const [tooltip, setTooltip] = useState({ visible: false, text: '', x: 0, y: 0 });
 
@@ -57,7 +56,7 @@ function FriendList({ friendsData, onChat }) {
                   <p className="friend-name">{friend.name}</p>
                 </div>
                 <div className="friend-actions">
-                  <button className="friend-button">전적 보기</button>
+                  <button className="friend-button" onClick={() => onRecord(friend.name)}>전적 보기</button>
                   <button
                     className="friend-button"
                     onClick={() => onChat(friend.name, friend.tier)}
