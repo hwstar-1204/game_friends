@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Template from './template';
 import './main.css';
+import friendsApi from '../utils/friendsApi';
 
 function MainPage() {
   const [friendsData, setFriendsData] = useState([]);
@@ -8,31 +9,44 @@ function MainPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [chatWindow, setChatWindow] = useState(null);
 
+  const testFriendsData = [  // 친구 데이터 예시 (추후 삭제 예정)
+    { name: '친구 1', status: 'online', tier: 'iron', profileImage: '' },
+    { name: '친구 2', status: 'in-game', tier: 'bronze', profileImage: '' },
+    { name: '친구 3', status: 'offline', tier: 'silver', profileImage: '' },
+    { name: '친구 4', status: 'in-game', tier: 'gold', profileImage: '' },
+    { name: '친구 5', status: 'offline', tier: 'platinum', profileImage: '' },
+    { name: '친구 6', status: 'offline', tier: 'emerald', profileImage: '' },
+    { name: '친구 7', status: 'in-game', tier: 'diamond', profileImage: '' },
+    { name: '친구 8', status: 'offline', tier: 'master', profileImage: '' },
+    { name: '친구 9', status: 'offline', tier: 'grandmaster', profileImage: '' },
+    { name: '친구 10', status: 'online', tier: 'challenger', profileImage: '' },
+    { name: '친구 11', status: 'in-game', tier: 'platinum', profileImage: '' },
+    { name: '친구 12', status: 'in-game', tier: 'platinum', profileImage: '' },
+  ]
+  const testPlayersData = [
+    { name: '플레이어 1', tier: 'iron', profileImage: '' },
+    { name: '플레이어 2', tier: 'bronze', profileImage: '' },
+    { name: '플레이어 3', tier: 'silver', profileImage: '' },
+    { name: '플레이어 4', tier: 'gold', profileImage: '' },
+    { name: '플레이어 5', tier: 'platinum', profileImage: '' },
+  ]
+
   useEffect(() => {
-    // TODO: 데이터베이스에서 친구 데이터를 가져오는 로직 추가
-    setFriendsData([
-      { name: '친구 1', status: 'online', tier: 'iron', profileImage: '' },
-      { name: '친구 2', status: 'in-game', tier: 'bronze', profileImage: '' },
-      { name: '친구 3', status: 'offline', tier: 'silver', profileImage: '' },
-      { name: '친구 4', status: 'in-game', tier: 'gold', profileImage: '' },
-      { name: '친구 5', status: 'offline', tier: 'platinum', profileImage: '' },
-      { name: '친구 6', status: 'offline', tier: 'emerald', profileImage: '' },
-      { name: '친구 7', status: 'in-game', tier: 'diamond', profileImage: '' },
-      { name: '친구 8', status: 'offline', tier: 'master', profileImage: '' },
-      { name: '친구 9', status: 'offline', tier: 'grandmaster', profileImage: '' },
-      { name: '친구 10', status: 'online', tier: 'challenger', profileImage: '' },
-      { name: '친구 11', status: 'in-game', tier: 'platinum', profileImage: '' },
-      { name: '친구 12', status: 'in-game', tier: 'platinum', profileImage: '' },
-    ]);
+    // 데이터베이스에서 친구 데이터를 가져오는 로직 
+    const fetchFriendsList = async () => {
+      try {
+        const response = await friendsApi.getFriendsList();
+        console.log(response);
+        setFriendsData(response);
+      } catch (error) {
+        console.error('Error fetching friends list:', error);
+        setFriendsData(testFriendsData); // DB에서 못불러오면 테스트 데이터로 대체
+      }
+    };
+    fetchFriendsList();
 
     // TODO: 데이터베이스에서 플레이어 데이터를 가져오는 로직 추가
-    setPlayers([
-      { name: '플레이어 1', tier: 'iron', profileImage: '' },
-      { name: '플레이어 2', tier: 'bronze', profileImage: '' },
-      { name: '플레이어 3', tier: 'silver', profileImage: '' },
-      { name: '플레이어 4', tier: 'gold', profileImage: '' },
-      { name: '플레이어 5', tier: 'platinum', profileImage: '' },
-    ]);
+    setPlayers(testPlayersData);
   }, []);
 
   const handleSearch = () => {

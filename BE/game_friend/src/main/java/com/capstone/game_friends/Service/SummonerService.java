@@ -1,6 +1,10 @@
 package com.capstone.game_friends.Service;
 
-import com.capstone.game_friends.DTO.SummonerResponseDTO;
+import com.capstone.game_friends.Constant.RiotConstant;
+import com.capstone.game_friends.DTO.Riot.LeagueResponseDTO;
+import com.capstone.game_friends.DTO.PuuIdRequestDTO;
+import com.capstone.game_friends.DTO.PuuIdResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
 import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Domain.SummonerInfo;
 import com.capstone.game_friends.Repository.MemberRepository;
@@ -25,17 +29,56 @@ import java.io.IOException;
 public class SummonerService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MemberRepository memberRepository;
+    private final RiotConstant riotConstant;
 
     @Value("${riot.api.key}")
     private String apiKey;
 
-    public String getPuuId(String gameName, String tagLine){
+    // 계정 연동 시 개인 프로필 정보에 필요한 소환사 정보와 티어 획득 메서드
+    public SummonerResponseDTO getSummoner(PuuIdRequestDTO requestDTO, Member member){
+
+        PuuIdResponseDTO puuId = getSummonerPuuId(requestDTO);  // 계정의 고유 PuuId 획득하는 메서드
+        SummonerResponseDTO result = getSummonerInfo(puuId.getPuuid()); // PuuId를 기반으로 소환사 정보 획득
+
+        result.setSummonerPuuId(puuId);
+        String serverUrl = "https://kr.api.riotgames.com";
+
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet(serverUrl + "/lol/league/v4/entries/by-summoner/" + result.getSummonerId() + "?api_key=" + apiKey);
+            CloseableHttpResponse response = client.execute(request);
+
+            if(response.getStatusLine().getStatusCode() != 200){
+                throw new RuntimeException("라이엇 API 호출 실패");
+            }
+
+            HttpEntity entity = response.getEntity();
+            String jsonResponse = EntityUtils.toString(entity);
+            JsonNode node = objectMapper.readTree(jsonResponse);
+            LeagueResponseDTO leagueInfo = objectMapper.treeToValue(node.get(0), LeagueResponseDTO.class);
+
+            result.setLeagueInfo(leagueInfo);
+
+            member.setSummonerInfo(SummonerInfo.Info(result));
+            memberRepository.save(member);
+
+            return result;
+
+        } catch (IOException e){
+            throw new RuntimeException("API 호출 실패", e);
+        }
+    }
+
+    // 계정의 고유 PuuId 획득하는 메서드
+    public PuuIdResponseDTO getSummonerPuuId(PuuIdRequestDTO requestDTO){
+
+        PuuIdResponseDTO result;
 
         String serverUrl = "https://asia.api.riotgames.com";
 
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(serverUrl + "/riot/account/v1/accounts/by-riot-id/" + gameName+"/"+ tagLine + "?api_key=" + apiKey);
+            HttpGet request = new HttpGet(serverUrl + "/riot/account/v1/accounts/by-riot-id/" + requestDTO.getGameName()+"/"+ requestDTO.getTagLine() + "?api_key=" + apiKey);
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
@@ -44,15 +87,17 @@ public class SummonerService {
 
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
-            JsonNode node = objectMapper.readTree(jsonResponse);
-            return node.get("puuid").asText();
+            result = objectMapper.readValue(jsonResponse,PuuIdResponseDTO.class);
+            return result;
 
         } catch (IOException e){
             e.printStackTrace();
             return null;
         }
     }
-    public SummonerResponseDTO getSummonerId(String puuId){
+
+    // PuuId를 기반으로 소환사 정보 획득
+    public SummonerResponseDTO getSummonerInfo(String puuId){
 
         SummonerResponseDTO result;
 
@@ -64,58 +109,24 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
-            }
-
-            HttpEntity entity = response.getEntity();
-            String jsonResponse = EntityUtils.toString(entity);
-            result = objectMapper.readValue(jsonResponse,SummonerResponseDTO.class);
-            return result;
-
-        } catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public SummonerResponseDTO getSummonerInfo(String gameName, String tagLine, Member member){
-
-        String puuId = getPuuId(gameName, tagLine);
-        SummonerResponseDTO result = getSummonerId(puuId);
-
-        String serverUrl = "https://kr.api.riotgames.com";
-
-        try {
-            CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(serverUrl + "/lol/league/v4/entries/by-summoner/" + result.getId() + "?api_key=" + apiKey);
-            CloseableHttpResponse response = client.execute(request);
-
-            if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
             JsonNode node = objectMapper.readTree(jsonResponse);
-            SummonerResponseDTO leagueInfo = objectMapper.treeToValue(node.get(0), SummonerResponseDTO.class);
-
-            result.setPuuId(puuId);
-            result.setLeagueId(leagueInfo.getLeagueId());
-            result.setQueueType(leagueInfo.getQueueType());
-            result.setTier(leagueInfo.getTier());
-            result.setRank(leagueInfo.getRank());
-            result.setLeaguePoints(leagueInfo.getLeaguePoints());
-            result.setWins(leagueInfo.getWins());
-            result.setLosses(leagueInfo.getLosses());
-
-            member.setSummonerInfo(SummonerInfo.Info(result));
-            memberRepository.save(member);
-
+            String summonerId = node.get("id").asText();
+            result = objectMapper.readValue(jsonResponse, SummonerResponseDTO.class);
+            result.setSummonerId(summonerId);
             return result;
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("API 호출 실패", e);
         }
+    }
+
+    // 계정 연동 해제
+    public void removeSummonerInfo(String puuId) {
+
     }
 }

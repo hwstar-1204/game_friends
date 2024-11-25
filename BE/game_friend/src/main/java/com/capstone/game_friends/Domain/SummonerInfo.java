@@ -1,6 +1,6 @@
 package com.capstone.game_friends.Domain;
 
-import com.capstone.game_friends.DTO.SummonerResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,64 +8,43 @@ import lombok.*;
 @Table(name = "summoner_info")
 @Getter
 @Setter
-@Builder // 빌더 패턴 제공
-@AllArgsConstructor // 모든 필드를 파라미터로 받는 생성자를 자동 생성
-@NoArgsConstructor // 파라미터가 없는 기본 생성자를 자동 생성
+@AllArgsConstructor
+@Builder
+@NoArgsConstructor
 public class SummonerInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "puu_id")
-    private String puuId;
-
-    @Column(name = "profile_icon_id")
-    private int profileIconId;
-
-    @Column(name = "revision_date")
-    private long revisionDate; // 데이터 마지막 조회시간
-
-    @Column(name = "summoner_id")
-    private String summonerId;
-
-    @Column(name = "summoner_level")
-    private long summonerLevel;
-
-    @Column(name = "league_id")
+    @Column(name = "puuid")
+    private String puuid;
     private String leagueId;
-
-    @Column(name = "queue_type")
     private String queueType;
-
-    @Column(name = "tier")
     private String tier;
-
-    @Column(name = "rank")
+    private String gameName;
+    private String tagLine;
+    private String summonerRank;
+    private String summonerId;
     private String rank;
-
-    @Column(name = "league_points")
+    private long revisionDate;
+    private long summonerLevel;
+    private int profileIconId;
     private int leaguePoints;
-
-    @Column(name = "wins")
     private int wins;
-
-    @Column(name = "losses")
     private int losses;
 
-    @Builder
-    // 생성자
     public static SummonerInfo Info(SummonerResponseDTO responseDTO) {
         return SummonerInfo.builder()
+                .gameName(responseDTO.getGameName())
+                .tagLine(responseDTO.getTagLine())
                 .profileIconId(responseDTO.getProfileIconId())
                 .revisionDate(responseDTO.getRevisionDate())
-                .summonerId(responseDTO.getId())
-                .puuId(responseDTO.getPuuId())
+                .summonerId(responseDTO.getSummonerId())
+                .rank(responseDTO.getRank())
+                .puuid(responseDTO.getPuuid())
                 .summonerLevel(responseDTO.getSummonerLevel())
                 .leagueId(responseDTO.getLeagueId())
                 .queueType(responseDTO.getQueueType())
                 .tier(responseDTO.getTier())
-                .rank(responseDTO.getRank())
+                .summonerRank(responseDTO.getRank())
                 .leaguePoints(responseDTO.getLeaguePoints())
                 .wins(responseDTO.getWins())
                 .losses(responseDTO.getLosses())

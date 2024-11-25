@@ -1,14 +1,33 @@
 /* login.js */
-
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import apiClient from '../../utils/api';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
 
   const handleRegisterClick = () => {
     navigate('/register');
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await apiClient.post('/auth/login', { email, password });
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
+      
+      navigate('/');
+      alert('로그인 성공');
+      console.log(response);
+    } catch (error) {
+      alert('로그인 실패');
+      console.error('로그인 오류:', error);
+    }
   };
 
   return (
@@ -20,19 +39,18 @@ function LoginPage() {
 
       <div className="login-contents">
         <h2>로그인</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="input-group">
-            <label htmlFor="username">아이디:</label>
-            <input type="text" id="username" name="username" required />
+            <label htmlFor="email">이메일:</label>
+            <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일을 입력하세요" required />
           </div>
           <div className="input-group">
             <label htmlFor="password">비밀번호:</label>
-            <input type="password" id="password" name="password" required />
+            <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" required />
           </div>
           <button type="submit" className="login-button">로그인</button>
           <button type="button" className="register-button" onClick={handleRegisterClick}>회원가입</button>
         </form>
-
       </div>
       <div className="login-footer">
         <h2>강릉원주대학교 캡스톤 디자인2 5조</h2>

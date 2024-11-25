@@ -1,16 +1,24 @@
 // template.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FriendList from '../components/friends/friends';
 import '../components/friends/friends.css';
 import './template.css';
+import { useNavigate } from 'react-router-dom';
 
 function Template({ children, friendsData }) {
   const [chatWindow, setChatWindow] = useState(null);
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleChat = (friendName, friendTier) => {
     if (chatWindow && !chatWindow.closed) {
       chatWindow.location.href = `/chat?friend=${friendName}&tier=${friendTier}`;
-      chatWindow.focus(); // 채팅창을 최상위로 가져옴
+      chatWindow.focus();
     } else {
       const newChatWindow = window.open(
         `/chat?friend=${friendName}&tier=${friendTier}`,
@@ -18,11 +26,14 @@ function Template({ children, friendsData }) {
         'width=400,height=600,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes'
       );
       setChatWindow(newChatWindow);
-      newChatWindow.focus(); // 새 창을 열 때도 포커스
+      newChatWindow.focus();
     }
   };
-  
-  
+
+  const handleRecord = (friendName) => {
+    navigate(`/record?friend=${friendName}`, { state: { friendsData } });
+  };
+
 
   return (
     <div className="main-container">
@@ -32,15 +43,18 @@ function Template({ children, friendsData }) {
           <h2>Random Game Friends</h2>
         </div>
         <div className="header-right">
-          <button className="profile-icon" onClick={() => window.location.href='/login'}>
-            로그인
+          <button 
+            className="profile-icon" 
+            onClick={() => window.location.href = isLoggedIn ? '/profile' : '/login'}
+          >
+            {isLoggedIn ? '프로필' : '로그인'}
           </button>
         </div>
       </header>
       <div className="main-contents">
         {children}
         <div className="main-contents-right">
-          <FriendList friendsData={friendsData} onChat={handleChat} />
+          <FriendList friendsData={friendsData} onChat={handleChat} onRecord={handleRecord} />
         </div>
       </div>
     </div>

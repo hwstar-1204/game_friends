@@ -17,7 +17,8 @@ import java.time.LocalDateTime;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private long id;
 
     @Column(nullable = false)
@@ -26,15 +27,14 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String nickname;
 
-    @Enumerated(EnumType.STRING) // Enum 값이 DB에서 문자열 형태로 저장되게 함.
+    @Enumerated(EnumType.STRING)
     private Role role;
 
-    // SummonerInfo와 1:1 관계 설정
     @OneToOne(cascade = CascadeType.ALL) // CascadeType 설정
-    @JoinColumn(name = "puuId") // 외래 키 설정
+    @JoinColumn(name = "puuid") // 외래 키 설정
     private SummonerInfo summonerInfo;
 
     @CreatedDate
