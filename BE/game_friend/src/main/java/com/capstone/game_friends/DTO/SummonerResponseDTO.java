@@ -10,11 +10,12 @@ import lombok.*;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true) // 정의되지 않은 필드를 무시
 public class SummonerResponseDTO {
-    private int profileIconId; // 1번
-    private long revisionDate; // 1번
-    private String id; // 1번
-    private String puuId; // 1번
-    private long summonerLevel; // 1번
+    private String id;
+    private int profileIconId;
+    private long revisionDate;
+    private String summonerId;
+    private String puuId;
+    private long summonerLevel;
     private String leagueId;
     private String queueType;
     private String tier;

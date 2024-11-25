@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Template from './template';
 import './main.css';
+import friendsApi from '../utils/friendsApi';
 
 function MainPage() {
   const [friendsData, setFriendsData] = useState([]);
@@ -9,8 +10,15 @@ function MainPage() {
   const [chatWindow, setChatWindow] = useState(null);
 
   useEffect(() => {
-    // TODO: 데이터베이스에서 친구 데이터를 가져오는 로직 추가
-    setFriendsData([
+    // 데이터베이스에서 친구 데이터를 가져오는 로직 
+    const fetchFriendsList = async () => {
+      const response = await friendsApi.getFriendsList();
+      console.log(response);
+      setFriendsData(response);
+    };
+    fetchFriendsList();
+
+    setFriendsData([  // 친구 데이터 예시 (추후 삭제 예정)
       { name: '친구 1', status: 'online', tier: 'iron', profileImage: '' },
       { name: '친구 2', status: 'in-game', tier: 'bronze', profileImage: '' },
       { name: '친구 3', status: 'offline', tier: 'silver', profileImage: '' },
