@@ -1,4 +1,4 @@
-package com.capstone.game_friends.DTO;
+package com.capstone.game_friends.DTO.Riot;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

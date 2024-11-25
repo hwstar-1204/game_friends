@@ -1,9 +1,10 @@
 package com.capstone.game_friends.Service;
 
-import com.capstone.game_friends.DTO.LeagueResponseDTO;
+import com.capstone.game_friends.Constant.RiotConstant;
+import com.capstone.game_friends.DTO.Riot.LeagueResponseDTO;
 import com.capstone.game_friends.DTO.PuuIdRequestDTO;
 import com.capstone.game_friends.DTO.PuuIdResponseDTO;
-import com.capstone.game_friends.DTO.SummonerResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
 import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Domain.SummonerInfo;
 import com.capstone.game_friends.Repository.MemberRepository;
@@ -28,6 +29,7 @@ import java.io.IOException;
 public class SummonerService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MemberRepository memberRepository;
+    private final RiotConstant riotConstant;
 
     @Value("${riot.api.key}")
     private String apiKey;
@@ -123,5 +125,10 @@ public class SummonerService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    // 계정 연동 해제
+    public void removeSummonerInfo(String puuId) {
+
     }
 }

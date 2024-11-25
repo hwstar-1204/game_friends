@@ -1,6 +1,6 @@
 package com.capstone.game_friends.Domain;
 
-import com.capstone.game_friends.DTO.SummonerResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +23,7 @@ public class SummonerInfo {
     private String tagLine;
     private String summonerRank;
     private String summonerId;
+    private String rank;
     private long revisionDate;
     private long summonerLevel;
     private int profileIconId;
@@ -37,6 +38,7 @@ public class SummonerInfo {
                 .profileIconId(responseDTO.getProfileIconId())
                 .revisionDate(responseDTO.getRevisionDate())
                 .summonerId(responseDTO.getSummonerId())
+                .rank(responseDTO.getRank())
                 .puuid(responseDTO.getPuuid())
                 .summonerLevel(responseDTO.getSummonerLevel())
                 .leagueId(responseDTO.getLeagueId())

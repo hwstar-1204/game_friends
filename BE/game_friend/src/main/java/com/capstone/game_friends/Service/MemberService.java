@@ -2,16 +2,13 @@ package com.capstone.game_friends.Service;
 
 import com.capstone.game_friends.Config.SecurityUtil;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
-import com.capstone.game_friends.DTO.SummonerResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
 import com.capstone.game_friends.Domain.Member;
-import com.capstone.game_friends.Domain.SummonerInfo;
 import com.capstone.game_friends.Repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +16,16 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Member getMyInfoBySecurity(){
+    public MemberResponseDTO getMyInfoBySecurity(){
         return memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .map(MemberResponseDTO::of)
                 .orElseThrow(() -> new RuntimeException("인증 오류"));
     }
 
-    public SummonerResponseDTO getSummonerInfo(){
-        Member member = getMyInfoBySecurity();
-        return member.getSummonerInfo();
+    public SummonerResponseDTO getSummoner() {
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId())
+                .orElseThrow(() -> new RuntimeException("인증오류"));
+        return new SummonerResponseDTO(member.getSummonerInfo());
     }
 
     @Transactional

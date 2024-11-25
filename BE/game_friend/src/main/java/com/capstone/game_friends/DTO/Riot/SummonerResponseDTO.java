@@ -1,5 +1,7 @@
-package com.capstone.game_friends.DTO;
+package com.capstone.game_friends.DTO.Riot;
 
+import com.capstone.game_friends.DTO.PuuIdResponseDTO;
+import com.capstone.game_friends.Domain.SummonerInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -14,12 +16,12 @@ import lombok.*;
 public class SummonerResponseDTO {
 
     private long revisionDate;
-    private String gameName;  // puuId get
-    private String tagLine; // puuId get
-    private String puuid; // puuId get
-    private String summonerId; // summoner get -> id를 summonerId로 변경해야함
-    private long summonerLevel; // summoner get
-    private int profileIconId; // summoner get
+    private String gameName;
+    private String tagLine;
+    private String puuid;
+    private String summonerId;
+    private long summonerLevel;
+    private int profileIconId;
     private String leagueId;
     private String queueType;
     private String tier;
@@ -28,6 +30,23 @@ public class SummonerResponseDTO {
     private int wins;
     private int losses;
 
+    // SummonerInfo 객체를 매개변수로 받는 생성자
+    public SummonerResponseDTO(SummonerInfo summonerInfo) {
+        this.revisionDate = summonerInfo.getRevisionDate();
+        this.gameName = summonerInfo.getGameName();
+        this.tagLine = summonerInfo.getTagLine();
+        this.puuid = summonerInfo.getPuuid();
+        this.summonerId = summonerInfo.getSummonerId();
+        this.summonerLevel = summonerInfo.getSummonerLevel();
+        this.profileIconId = summonerInfo.getProfileIconId();
+        this.leagueId = summonerInfo.getLeagueId();
+        this.queueType = summonerInfo.getQueueType();
+        this.tier = summonerInfo.getTier();
+        this.rank = summonerInfo.getRank();
+        this.leaguePoints = summonerInfo.getLeaguePoints();
+        this.wins = summonerInfo.getWins();
+        this.losses = summonerInfo.getLosses();
+    }
     public void setLeagueInfo(LeagueResponseDTO leagueResponseDTO) {
         this.leaguePoints = leagueResponseDTO.getLeaguePoints();
         this.queueType = leagueResponseDTO.getQueueType();
