@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SummonerRequestDTO {
+public class PuuIdRequestDTO {
     private String gameName;
     private String tagLine;
 }
