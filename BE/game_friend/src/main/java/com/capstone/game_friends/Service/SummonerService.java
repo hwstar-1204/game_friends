@@ -49,7 +49,7 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
@@ -65,8 +65,7 @@ public class SummonerService {
             return result;
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("API 호출 실패", e);
         }
     }
 
@@ -110,7 +109,7 @@ public class SummonerService {
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
-                return null;
+                throw new RuntimeException("라이엇 API 호출 실패");
             }
 
             HttpEntity entity = response.getEntity();
@@ -122,8 +121,7 @@ public class SummonerService {
             return result;
 
         } catch (IOException e){
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException("API 호출 실패", e);
         }
     }
 
