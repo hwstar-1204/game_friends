@@ -1,9 +1,8 @@
 // chat.js
-
 import React, { useState, useEffect, useRef } from 'react';
 import './chat.css';
 
-function ChatWindow({ friendName, friendTier }) {
+function ChatWindow({ friendName, friendTier, friendsData = [] }) {
   const [messages, setMessages] = useState([{
     content: 'ㅎㅇ',
     timestamp: '오전 9:43',
@@ -14,6 +13,7 @@ function ChatWindow({ friendName, friendTier }) {
     type: 'sent'
   }]);
   const [inputValue, setInputValue] = useState('');
+  const [isFriend, setIsFriend] = useState(friendsData.some(friend => friend.name === friendName));
 
   // 프로필 이미지 URL 정의 (예시로 빈 문자열을 사용할 경우 기본 회색 원이 보임)
   const friendImageUrl = ''; // 이미지가 없을 때 빈 문자열
@@ -27,6 +27,18 @@ function ChatWindow({ friendName, friendTier }) {
     };
     setMessages([...messages, newMessage]);
     setInputValue('');
+  };
+
+  const handleFriendAction = () => {
+    if (isFriend) {
+      // 친구삭제 로직 (예시)
+      setIsFriend(false);
+      alert(`${friendName} 님을 친구 목록에서 삭제했습니다.`);
+    } else {
+      // 친구추가 로직 (예시)
+      setIsFriend(true);
+      alert(`${friendName} 님을 친구 목록에 추가했습니다.`);
+    }
   };
 
   const messagesEndRef = useRef(null);
@@ -55,7 +67,9 @@ function ChatWindow({ friendName, friendTier }) {
             <span>{friendName}</span>
           </div>
         </div>
-        <img src={`/img/tiers/${friendTier}.png`} alt="티어 이미지" className="friend-tier" />
+        <button className="friend-action-button" onClick={handleFriendAction}>
+          {isFriend ? '-' : '+'}
+        </button>
       </div>
       <div className="chat-messages">
         {messages.map((message, index) => (

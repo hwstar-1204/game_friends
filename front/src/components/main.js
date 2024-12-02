@@ -1,13 +1,16 @@
+// main.js
 import React, { useEffect, useState } from 'react';
 import Template from './template';
 import './main.css';
 import friendsApi from '../utils/friendsApi';
+import { useNavigate } from 'react-router-dom';
 
 function MainPage() {
   const [friendsData, setFriendsData] = useState([]);
   const [players, setPlayers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [chatWindow, setChatWindow] = useState(null);
+  const navigate = useNavigate();
 
   const testFriendsData = [  // 친구 데이터 예시 (추후 삭제 예정)
     { name: '친구 1', status: 'online', tier: 'iron', profileImage: '' },
@@ -50,8 +53,7 @@ function MainPage() {
   }, []);
 
   const handleSearch = () => {
-    alert(`검색어: ${searchTerm}`);
-    // TODO: 검색 기능 추가 (searchTerm을 바탕으로 검색 수행)
+    navigate(`/record?friend=${searchTerm}`);
   };
 
   const handleChat = (friendName, friendTier) => {
