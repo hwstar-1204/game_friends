@@ -1,7 +1,9 @@
 package com.capstone.game_friends.Config.Websocket;
 
+import com.capstone.game_friends.jwt.JwtChannelInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.*;
@@ -11,7 +13,10 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 
 @Configuration
 @EnableWebSocketMessageBroker
+@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final JwtChannelInterceptor jwtChannelInterceptor;
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic"); // 메시지 브로커가 사용할 주제(prefix)
@@ -20,35 +25,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS(); // STOMP 엔드포인트 설정
+//        registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:8080").withSockJS(); // STOMP 엔드포인트 설정
+
+        registry.addEndpoint("/ws")
+                .addInterceptors(new CustomHandshakeInterceptor())
+                .setAllowedOrigins("http://localhost:8080")
+                .withSockJS();
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(jwtChannelInterceptor);
     }
 }
-
-//@Configuration
-//@EnableWebSocket
-//@RequiredArgsConstructor
-//public class WebSocketConfig implements WebSocketMessageBrokerConfigurer  {
-//
-//    private final WebSocketHandler webSocketHandler;
-//
-//    @Override
-//    public void configureMessageBroker(MessageBrokerRegistry config) {
-//        config.enableSimpleBroker("/topic");
-//        config.setApplicationDestinationPrefixes("/app");
-//    }
-//
-//    @Override
-//    public void registerStompEndpoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint("/ws").withSockJS();
-//    }
-//
-//    @Override
-//    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-//        registry
-//                // /ws/conn 경로로 WebSocket 연결을 허용
-//                .addHandler(webSocketHandler, "/ws/conn")
-//                // CORS 허용
-//                .setAllowedOrigins("http://localhost:8080").withSockJS();;
-//    }
-//
-//}

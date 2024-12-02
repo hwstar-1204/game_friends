@@ -28,7 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
+	implementation 'org.springframework.security:spring-security-messaging'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	implementation 'mysql:mysql-connector-java:8.0.33'
 //	runtimeOnly 'com.h2database:h2'

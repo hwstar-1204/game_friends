@@ -10,11 +10,12 @@
 <body>
 <h1>WebSocket 매칭 테스트</h1>
 <div>
-    <label for="memberId">사용자 ID:</label>
-    <input type="text" id="memberId" value="1" />
+    <input type="text" id="memberId" placeholder="Member ID" />
+    <input type="text" id="token" placeholder="JWT Token" />
+    <button id="connectButton">Connect</button>
+    <button onclick="fetchMemberId()">멤버 ID 요청</button>
+    <pre id="result"></pre>
 </div>
-<button id="connectButton">연결하기</button>
-<div id="result"></div>
 
 <script>
     let stompClient = null;
@@ -40,13 +41,42 @@
 
     // STOMP 클라이언트 연결 설정
     function connect() {
+        const token = document.getElementById('token').value; // JWT 토큰을 가져옵니다.
         const socket = new SockJS('/ws'); // 서버의 STOMP 엔드포인트로 연결
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
+
+        // STOMP 연결 시 Authorization 헤더에 JWT 포함
+        stompClient.connect(
+            { 'Authorization': 'Bearer ' + token }, // JWT 토큰을 헤더에 포함
+            onConnected,
+            onError
+        );
+    }
+
+
+    async function fetchMemberId() { //beforematch 테스트
+        const jwt = document.getElementById('token').value; // JWT 토큰을 가져옵니다.
+
+        const response = await fetch('/beforematch', {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}` // JWT를 Authorization 헤더에 추가
+            },
+        });
+        if (response.ok) {
+            const memberId = await response.json();
+            console.log('반환된 멤버 ID:', memberId); // 콘솔에 멤버 ID 출력
+            document.getElementById('memberId').textContent = `멤버 ID: ${memberId}`;
+        } else {
+            console.error('오류:', response.status, response.statusText);
+        }
     }
 
     // 버튼 클릭 시 연결 요청
     document.getElementById('connectButton').onclick = connect;
 </script>
+
 </body>
 </html>

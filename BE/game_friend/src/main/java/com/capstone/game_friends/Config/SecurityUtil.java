@@ -1,5 +1,9 @@
 package com.capstone.game_friends.Config;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -18,3 +22,4 @@ public class SecurityUtil {
         return Long.parseLong(authentication.getName());
     }
 }
+
