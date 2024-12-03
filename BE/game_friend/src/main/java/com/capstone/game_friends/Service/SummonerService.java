@@ -38,14 +38,24 @@ public class SummonerService {
     public SummonerResponseDTO getSummoner(PuuIdRequestDTO requestDTO, Member member){
 
         PuuIdResponseDTO puuId = getSummonerPuuId(requestDTO);  // 계정의 고유 PuuId 획득하는 메서드
-        SummonerResponseDTO result = getSummonerInfo(puuId.getPuuid()); // PuuId를 기반으로 소환사 정보 획득
+        SummonerResponseDTO result = getSummonerInfo(requestDTO); // PuuId를 기반으로 소환사 정보 획득
 
         result.setSummonerPuuId(puuId);
-        String serverUrl = "https://kr.api.riotgames.com";
+        LeagueResponseDTO leagueInfo = getLeagueInfo(result.getSummonerId());
+        result.setLeagueInfo(leagueInfo);
 
+        member.setSummonerInfo(SummonerInfo.Info(result));
+        memberRepository.save(member);
+
+        return result;
+    }
+
+    // 암호화된 summonerId로 랭크 정보 가져오기
+    public LeagueResponseDTO getLeagueInfo(String summonerId) {
+        String serverUrl = "https://kr.api.riotgames.com";
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(serverUrl + "/lol/league/v4/entries/by-summoner/" + result.getSummonerId() + "?api_key=" + apiKey);
+            HttpGet request = new HttpGet(serverUrl + "/lol/league/v4/entries/by-summoner/" + summonerId + "?api_key=" + apiKey);
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
@@ -55,14 +65,7 @@ public class SummonerService {
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
             JsonNode node = objectMapper.readTree(jsonResponse);
-            LeagueResponseDTO leagueInfo = objectMapper.treeToValue(node.get(0), LeagueResponseDTO.class);
-
-            result.setLeagueInfo(leagueInfo);
-
-            member.setSummonerInfo(SummonerInfo.Info(result));
-            memberRepository.save(member);
-
-            return result;
+            return objectMapper.treeToValue(node.get(0), LeagueResponseDTO.class);
 
         } catch (IOException e){
             throw new RuntimeException("API 호출 실패", e);
@@ -71,9 +74,6 @@ public class SummonerService {
 
     // 계정의 고유 PuuId 획득하는 메서드
     public PuuIdResponseDTO getSummonerPuuId(PuuIdRequestDTO requestDTO){
-
-        PuuIdResponseDTO result;
-
         String serverUrl = "https://asia.api.riotgames.com";
 
         try {
@@ -87,8 +87,7 @@ public class SummonerService {
 
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
-            result = objectMapper.readValue(jsonResponse,PuuIdResponseDTO.class);
-            return result;
+            return objectMapper.readValue(jsonResponse,PuuIdResponseDTO.class);
 
         } catch (IOException e){
             e.printStackTrace();
@@ -97,15 +96,16 @@ public class SummonerService {
     }
 
     // PuuId를 기반으로 소환사 정보 획득
-    public SummonerResponseDTO getSummonerInfo(String puuId){
-
+    public SummonerResponseDTO getSummonerInfo(PuuIdRequestDTO requestDTO){
+        PuuIdResponseDTO puuIdResponseDTO = getSummonerPuuId(requestDTO);
+        String puuid = puuIdResponseDTO.getPuuid();
         SummonerResponseDTO result;
 
         String serverUrl = "https://kr.api.riotgames.com";
 
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
-            HttpGet request = new HttpGet(serverUrl + "/lol/summoner/v4/summoners/by-puuid/" + puuId + "?api_key=" + apiKey);
+            HttpGet request = new HttpGet(serverUrl + "/lol/summoner/v4/summoners/by-puuid/" + puuid + "?api_key=" + apiKey);
             CloseableHttpResponse response = client.execute(request);
 
             if(response.getStatusLine().getStatusCode() != 200){
@@ -123,10 +123,5 @@ public class SummonerService {
         } catch (IOException e){
             throw new RuntimeException("API 호출 실패", e);
         }
-    }
-
-    // 계정 연동 해제
-    public void removeSummonerInfo(String puuId) {
-
     }
 }
