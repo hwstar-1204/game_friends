@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: 'jdbc:mysql://localhost:3306/capstone?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul'
+    username: root
+    password: 1234
+
+  # JPA ??
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        show-sql: true
+        ddl-auto: create
+        format_sql: true
+jwt:
+  secret: zk1z89kZEGeY8BL1E3g8urARhX8P9TTggamefriendsproje
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.web: DEBUG
+riot:
+  api:
+    key: "RGAPI-498dfa6b-7678-406e-83c3-8c047ae7d7aa"

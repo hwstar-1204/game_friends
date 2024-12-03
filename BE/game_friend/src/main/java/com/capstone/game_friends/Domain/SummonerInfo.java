@@ -24,6 +24,7 @@ public class SummonerInfo {
     private String summonerRank;
     private String summonerId;
     private String rank;
+    private float winRating;
     private long revisionDate;
     private long summonerLevel;
     private int profileIconId;
@@ -39,6 +40,7 @@ public class SummonerInfo {
                 .revisionDate(responseDTO.getRevisionDate())
                 .summonerId(responseDTO.getSummonerId())
                 .rank(responseDTO.getRank())
+                .winRating((float) responseDTO.getWins() / (responseDTO.getWins() + responseDTO.getLosses()))
                 .puuid(responseDTO.getPuuid())
                 .summonerLevel(responseDTO.getSummonerLevel())
                 .leagueId(responseDTO.getLeagueId())

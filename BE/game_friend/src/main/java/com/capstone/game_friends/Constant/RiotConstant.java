@@ -10,4 +10,7 @@ public class RiotConstant {
     public static final String SUMMONER_REQUEST_URL = "/lol/summoner/v4/summoners/by-puuid/";
     public static final String LEAGUE_REQUEST_URL = "/lol/league/v4/entries/by-summoner/";
     public static final String MATCH_REQUEST_URL = "/lol/match/v5/matches/by-puuid/";
+    public static final String ITEM_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/item/";
+    public static final String SUMMONER_SPELL_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/spell/";
+    public static final String CHAMPION_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/champion/";
 }
