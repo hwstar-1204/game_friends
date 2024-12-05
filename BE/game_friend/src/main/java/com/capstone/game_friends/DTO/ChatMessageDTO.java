@@ -10,21 +10,8 @@ import lombok.*;
 @Builder
 public class ChatMessageDTO {
 
-//    public ChatMessageDTO(Long chatroomid, String s) {
-//        this.messagetype = MessageType.JOIN;
-//        this.chatroomid = chatroomid;
-//        this.sender = "server";
-//        this.message = s;
-//
-//    }
-//
-//    public enum MessageType{
-//        JOIN, TALK, LEAVE
-//    }
-
-//    private MessageType  messagetype;
-    private Long chatroomid;
-//    private String sender;
+    private String chatroomid;
+    private String sender;
     private String message;
 
 }

@@ -3,16 +3,14 @@ package com.capstone.game_friends.Service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.UUID;
 
 @Slf4j
 @Service
 public class ChatService {
-    private final AtomicLong chatRoomIdGenerator = new AtomicLong(1); // AtomicLong을 사용하여 ID 생성
-
-    public Long createChatRoom() {
-        Long createdChatRoomId = chatRoomIdGenerator.getAndIncrement();
+    public String createChatRoom() { //채팅방 번호 생성
+        String createdChatRoomId = UUID.randomUUID().toString();
         log.info("CreatedChatRoomID : {}", createdChatRoomId);
-        return createdChatRoomId; // 고유한 채팅방 ID 생성
+        return createdChatRoomId;
     }
 }
