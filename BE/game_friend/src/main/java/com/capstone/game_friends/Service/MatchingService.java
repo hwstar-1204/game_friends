@@ -1,11 +1,8 @@
 package com.capstone.game_friends.Service;
 
-import com.capstone.game_friends.Config.SecurityUtil;
 import com.capstone.game_friends.DTO.MatchingResponseDTO;
-import com.capstone.game_friends.Domain.SummonerInfo;
+import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Repository.MemberRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -49,7 +46,7 @@ public class MatchingService {
             System.out.println("현재 대기 중인 사용자 수가 부족합니다: ");
             return; // 대기자가 부족하면 메서드 종료
         }
-        //while(waitingList.size() < requiredPlayers) System.out.println("매칭 대기 중"); //메서드가 시작되면 다른 사람이 들어올 때 까지 대기
+
         // 매칭 진행
         Collections.shuffle(waitingList); // 대기 리스트 섞기
         while (waitingList.size() >= requiredPlayers) {
@@ -58,21 +55,15 @@ public class MatchingService {
 
             String chatroomid = chatService.createChatRoom();
 
-            SummonerInfo summonerInfo1 = memberRepository.findById(user1).orElseThrow(() -> new RuntimeException("Member not found")).getSummonerInfo();
-            SummonerInfo summonerInfo2 = memberRepository.findById(user2).orElseThrow(() -> new RuntimeException("Member not found")).getSummonerInfo();
-
-            MatchingResponseDTO responseDTO1 = null;
-            MatchingResponseDTO responseDTO2 = null;
+            Member member1 = memberRepository.findById(user1).orElseThrow();
+            Member member2 = memberRepository.findById(user2).orElseThrow();
 
 //            messagingTemplate.convertAndSend("/topic/match/" + user1, responseDTO1.of(user1,chatroomid)); //test
 //            messagingTemplate.convertAndSend("/topic/match/" + user2, responseDTO2.of(user2,chatroomid));
 
-            responseDTO1.of(user2,chatroomid,summonerInfo1.getGameName(),summonerInfo1.getTagLine(),summonerInfo1.getTier(),summonerInfo1.getRank());
-            responseDTO2.of(user2,chatroomid,summonerInfo2.getGameName(),summonerInfo2.getTagLine(),summonerInfo2.getTier(),summonerInfo2.getRank());
-
             // 매칭 결과 전송
-            messagingTemplate.convertAndSend("/topic/match/" + user1, responseDTO1);
-            messagingTemplate.convertAndSend("/topic/match/" + user2, responseDTO2);
+            messagingTemplate.convertAndSend("/topic/match/" + user1, MatchingResponseDTO.of(member1,chatroomid));
+            messagingTemplate.convertAndSend("/topic/match/" + user2, MatchingResponseDTO.of(member2,chatroomid));
             System.out.println("매칭 성공: " + user1 + "와 " + user2 + "가 매칭되었습니다.");
         }
     }

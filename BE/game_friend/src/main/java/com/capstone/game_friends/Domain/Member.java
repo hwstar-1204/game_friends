@@ -30,6 +30,9 @@ public class Member {
     @Column
     private String nickname;
 
+    @Column
+    private String profileimage;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 

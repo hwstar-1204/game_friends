@@ -23,6 +23,7 @@ public class SummonerInfo {
     private String tagLine;
     private String summonerRank;
     private String summonerId;
+    @Column(name = "`rank`") //예약어라서 오류생김 @column으로 명시
     private String rank;
     private float winRating;
     private long revisionDate;

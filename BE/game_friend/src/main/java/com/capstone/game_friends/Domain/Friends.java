@@ -30,11 +30,11 @@ public class Friends {
     private LocalDateTime createAt;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "sender_user")
     private Member senderUser; // 친구 요청을 보낸 사용자
 
     @ManyToOne
-    @JoinColumn(name = "friend_id")
+    @JoinColumn(name = "receiver_user")
     private Member receiverUser; // 친구가 되는 사용자
 
 }
