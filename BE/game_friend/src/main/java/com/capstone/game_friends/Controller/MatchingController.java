@@ -1,7 +1,6 @@
 package com.capstone.game_friends.Controller;
 
 import com.capstone.game_friends.Config.SecurityUtil;
-import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Service.MatchingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +26,7 @@ public class MatchingController {
 //        //티어추가
 //        matchingService.requestMatching(SecurityUtil.getCurrentMemberId()); // 매칭 요청 처리
 //    }
-    @GetMapping("beforematch")
+    @GetMapping("/beforematch")
     public ResponseEntity<Long> getMemberid(){
         Long memberid = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.ok(memberid);

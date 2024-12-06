@@ -1,5 +1,6 @@
 package com.capstone.game_friends.Service;
 
+import com.capstone.game_friends.DTO.FriendResponseDTO;
 import com.capstone.game_friends.DTO.MemberRequestDTO;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
 import com.capstone.game_friends.Domain.Friends;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,24 +46,30 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-    public List<MemberResponseDTO> getFriends(Long userId){
+    public List<FriendResponseDTO> getFriends(Long userId){
 
         Member member = memberRepository.findById(userId).orElseThrow();
 
         return friendsRepository.findAcceptedFriendIdsByUserId(member).stream()
-                .map(MemberResponseDTO::of)
+                .map(FriendResponseDTO::of)
                 .collect(Collectors.toList());
-
     }
 
-    public void friendRequest(Long userId, MemberRequestDTO memberRequestDTO){
+    public void friendRequest(Long senderId, Long receiverId){
         Friends friends = new Friends();
 
-        friends.setSenderUser(memberRepository.findById(userId).orElseThrow());
-        friends.setReceiverUser(memberRepository.findByEmail(memberRequestDTO.getEmail()).orElseThrow());
-        friends.setStatus(Status.waiting);
+        friends.setSenderUser(memberRepository.findById(senderId).orElseThrow());
+        friends.setReceiverUser(memberRepository.findById(receiverId).orElseThrow());
+        friends.setStatus(Status.waiting); //친구 수락 대기
 
         friendsRepository.save(friends);
-
     }
+    public void deleteFriend(Long senderUserId, Long receiverUserId) {
+        friendsRepository.deleteRelationship(senderUserId, receiverUserId);
+    }
+    public void friendStatus(Long receiverUserId, Long senderUserId, Status status){
+        friendsRepository.updateStatus(receiverUserId, senderUserId, status);
+    }
+
+
 }

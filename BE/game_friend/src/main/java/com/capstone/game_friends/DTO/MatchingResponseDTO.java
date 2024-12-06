@@ -1,5 +1,6 @@
 package com.capstone.game_friends.DTO;
 
+import com.capstone.game_friends.Domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,14 +22,14 @@ public class MatchingResponseDTO {
         return MatchingResponseDTO.builder().memberId(memberId).chatRoomId(chatRoomId).build();
     }
 
-    public static MatchingResponseDTO of(Long memberId, String chatRoomId, String gameName, String tagLine, String tier, String rank){
+    public static MatchingResponseDTO of(Member member, String chatRoomId){
         return MatchingResponseDTO.builder().
-                memberId(memberId).
+                memberId(member.getId()).
                 chatRoomId(chatRoomId).
-                gameName(gameName).
-                tagLine(tagLine).
-                tier(tier).
-                rank(rank).
+                gameName(member.getNickname()).
+                tagLine(member.getSummonerInfo().getTagLine()).
+                tier(member.getSummonerInfo().getTier()).
+                rank(member.getSummonerInfo().getRank()).
                 build();
     }
 }
