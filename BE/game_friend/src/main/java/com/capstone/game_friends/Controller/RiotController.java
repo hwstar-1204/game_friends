@@ -46,7 +46,7 @@ public class RiotController {
         return ResponseEntity.ok(championService.getChampionList());
     }
     @PostMapping("/champions/detail")
-    public ResponseEntity<ChampionInfoDTO> getChampionInfo(@RequestParam("champion") String championName) {
+    public ResponseEntity<ChampionInfoDTO> getChampionInfo(@RequestParam("championName") String championName) {
         return ResponseEntity.ok(championService.getChampionInfo(championName));
     }
 }
