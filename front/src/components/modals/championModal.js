@@ -1,4 +1,3 @@
-// src/components/modals/championModal.js
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './championModal.css';
@@ -6,7 +5,8 @@ import './championModal.css';
 function ChampionModal({ isOpen, onClose, championData }) {
   const [skillDescription, setSkillDescription] = useState({
     name: '스킬 설명',
-    description: '확인하려는 스킬을 클릭하세요.'
+    description: '확인하려는 스킬을 클릭하세요.',
+    imageUrl: ''
   });
 
   if (!isOpen) return null;
@@ -27,10 +27,10 @@ function ChampionModal({ isOpen, onClose, championData }) {
         <button className="champion-close-button" onClick={onClose}>X</button>
         <div className="champion-info">
             <div
-            className="champion-image"
-            style={{
-                backgroundImage: `url(${imageUrl})`,
-            }}
+              className="champion-image"
+              style={{
+                  backgroundImage: `url(${imageUrl})`,
+              }}
             ></div>
             <div className="champion-name">
               <h4>{championData.role.split(', ').slice(0, 2).join(' / ')}</h4>
@@ -49,8 +49,18 @@ function ChampionModal({ isOpen, onClose, championData }) {
         </div>
         
         <div className="champion-skills-description">
+          <div className="champion-skills-name">
+            <div
+                className="skills-image"
+                style={{
+                    backgroundImage: `url(${skillDescription.imageUrl})`,
+                    display: skillDescription.imageUrl ? 'flex' : 'none',
+                }}
+              ></div>
+
             <h2>{skillDescription.name}</h2>
-            <h4>{skillDescription.description}</h4>
+          </div>
+          <h4>{skillDescription.description}</h4>
         </div>
       </div>
     </div>
@@ -69,22 +79,27 @@ ChampionModal.propTypes = {
       P: PropTypes.shape({
         name: PropTypes.string,
         description: PropTypes.string,
+        imageUrl: PropTypes.string,
       }),
       Q: PropTypes.shape({
         name: PropTypes.string,
         description: PropTypes.string,
+        imageUrl: PropTypes.string,
       }),
       W: PropTypes.shape({
         name: PropTypes.string,
         description: PropTypes.string,
+        imageUrl: PropTypes.string,
       }),
       E: PropTypes.shape({
         name: PropTypes.string,
         description: PropTypes.string,
+        imageUrl: PropTypes.string,
       }),
       R: PropTypes.shape({
         name: PropTypes.string,
         description: PropTypes.string,
+        imageUrl: PropTypes.string,
       }),
     }).isRequired,
   }).isRequired,
