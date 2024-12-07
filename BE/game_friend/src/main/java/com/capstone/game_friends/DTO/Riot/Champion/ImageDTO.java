@@ -21,4 +21,3 @@ public class ImageDTO {
     private int w;  // 이미지의 너비
     private int h;  // 이미지의 높이
 }
-

@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Service
@@ -33,17 +35,10 @@ public class MatchService {
     public List<MatchResponseDTO> getMatchList(PuuIdRequestDTO requestDTO, String gameType) {
         PuuIdResponseDTO responseDTO = summonerService.getSummonerPuuId(requestDTO);
 
-        String serverUrl = "https://asia.api.riotgames.com";
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
-
-            HttpGet request = new HttpGet(
-                    serverUrl + "/lol/match/v5/matches/by-puuid/" + responseDTO.getPuuid() + "/ids?type=" + gameType + "&start=" + start + "&count=" + count + "&api_key=" + apiKey);
+            HttpGet request = new HttpGet(MatchListRequestUrl(responseDTO.getPuuid(), endTime, startTime, gameType));
             CloseableHttpResponse response = client.execute(request);
-
-            if (response.getStatusLine().getStatusCode() != 200) {
-                return null;
-            }
 
             HttpEntity entity = response.getEntity();
             String jsonResponse = EntityUtils.toString(entity);
@@ -56,39 +51,35 @@ public class MatchService {
     }
 
     public List<MatchResponseDTO> getMatchInfo(String matchList) throws IOException {
-        List<String> result = new ArrayList<>();
+        List<String> matchs = new ArrayList<>();
         List<MatchResponseDTO> matchResponseDTOList = new ArrayList<>();
-        MatchInfoDTO matchInfoDTO = null;
         Map<Integer, String> summonerSpells = getSummonerSpellMap();
+
         for (String part : matchList.split(",")) {
-            result.add(part.replaceAll("[\\[\\]\"]", "").trim());
+            matchs.add(part.replaceAll("[\\[\\]\"]", "").trim());
         }
-        String serverUrl = "https://asia.api.riotgames.com";
+
         try {
-            for (String match : result) {
+            for (String match : matchs) {
                 List<PlayerStatsDTO> playerStatsDTOList = new ArrayList<>();
 
                 CloseableHttpClient client = HttpClientBuilder.create().build();
-
-                HttpGet request = new HttpGet(
-                        serverUrl + "/lol/match/v5/matches/" + match + "?api_key=" + apiKey);
+                HttpGet request = new HttpGet(MatchInfoRequestUrl(match));
                 CloseableHttpResponse response = client.execute(request);
-
-                if (response.getStatusLine().getStatusCode() != 200) {
-                    return null;
-                }
 
                 HttpEntity entity = response.getEntity();
                 String jsonResponse = EntityUtils.toString(entity);
                 JsonNode node = objectMapper.readTree(jsonResponse);
                 InfoDTO infoDTO = objectMapper.treeToValue(node.get("info"), InfoDTO.class);
-                matchInfoDTO = objectMapper.treeToValue(node.get("info"), MatchInfoDTO.class);
+                MatchInfoDTO matchInfoDTO = objectMapper.treeToValue(node.get("info"), MatchInfoDTO.class);
                 List<ParticipantDTO> player = infoDTO.getParticipants();
-                for(ParticipantDTO p : player) {
+
+                for (ParticipantDTO p : player) {
                     String summoner1Url = summonerSpells.get(p.getSummoner1Id());
                     String summoner2Url = summonerSpells.get(p.getSummoner2Id());
                     playerStatsDTOList.add(new PlayerStatsDTO(p, summoner1Url, summoner2Url));
                 }
+
                 matchResponseDTOList.add(new MatchResponseDTO(playerStatsDTOList, matchInfoDTO));
             }
             return matchResponseDTOList;
@@ -97,19 +88,21 @@ public class MatchService {
             return null;
         }
     }
+
     // 소환사 주문 이미지를 가져오기 위한 Map
     public Map<Integer, String> getSummonerSpellMap() throws IOException {
         Map<Integer, String> summonerSpells = new HashMap<>();
-        String requestUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/summoner.json";
         CloseableHttpClient client = HttpClientBuilder.create().build();
 
-        HttpGet request = new HttpGet(requestUrl);
+        HttpGet request = new HttpGet(RiotConstant.SPELL_LIST_URL);
         CloseableHttpResponse response = client.execute(request);
+
         HttpEntity entity = response.getEntity();
         String jsonResponse = EntityUtils.toString(entity);
         JsonNode summonerSpell = objectMapper.readTree(jsonResponse);
         JsonNode data = summonerSpell.get("data");
         Iterator<String> fieldNames = data.fieldNames();
+
         while (fieldNames.hasNext()) {
             String fieldName = fieldNames.next();
             JsonNode spell = data.get(fieldName);
@@ -118,9 +111,19 @@ public class MatchService {
             String key = image.get("full").asText();
             summonerSpells.put(id, key);
         }
-        for(int i =0; i<summonerSpells.size() ; i++) {
-            System.out.println(summonerSpells.get(i));
-        }
+
         return summonerSpells;
+    }
+
+    public String MatchInfoRequestUrl(String matchId) {
+        return String.format(RiotConstant.MATCH_INFO_REQUEST_URL,
+                matchId,
+                apiKey);
+    }
+
+    public String MatchListRequestUrl(String puuId, long startTime, long endTime,  String gameType) {
+        return String.format(RiotConstant.MATCH_REQUEST_URL,
+                puuId, startTime, endTime,
+                gameType, 0, 10, apiKey);
     }
 }

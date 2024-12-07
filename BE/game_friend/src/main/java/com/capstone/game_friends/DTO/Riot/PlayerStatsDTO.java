@@ -103,7 +103,7 @@ public class PlayerStatsDTO {
         this.champLevel = participantDTO.getChampLevel();
         this.championId = participantDTO.getChampionId();
         this.championName = participantDTO.getChampionName();
-        this.championImageUrl = RiotConstant.CHAMPION_IMAGE_URL + participantDTO.getChampionName() + ".png";
+        this.championImageUrl = String.format(RiotConstant.CHAMPION_IMAGE_URL, championName);
         this.teamPosition = participantDTO.getTeamPosition();
         this.magicDamageDealt = participantDTO.getMagicDamageDealt();
         this.magicDamageDealtToChampions = participantDTO.getMagicDamageDealtToChampions();

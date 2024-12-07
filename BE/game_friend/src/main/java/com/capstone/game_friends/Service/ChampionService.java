@@ -1,7 +1,6 @@
 package com.capstone.game_friends.Service;
 
-//import com.capstone.game_friends.DTO.Riot.Champion.ChampionDTO;
-
+import com.capstone.game_friends.Constant.RiotConstant;
 import com.capstone.game_friends.DTO.Riot.Champion.ChampionDTO;
 import com.capstone.game_friends.DTO.Riot.Champion.ChampionInfoDTO;
 import com.capstone.game_friends.DTO.Riot.Champion.SpellDTO;
@@ -30,12 +29,11 @@ public class ChampionService {
 
     // 챔피언 리스트 가져오기
     public List<ChampionDTO> getChampionList() {
-        String requestUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/data/en_US/champion.json"; // 챔피언 목록 가져올 url
         List<ChampionDTO> champions = new ArrayList<>();
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
 
-            HttpGet request = new HttpGet(requestUrl);
+            HttpGet request = new HttpGet(RiotConstant.CHAMPION_LIST_REQUEST_URL);
             CloseableHttpResponse response = client.execute(request);
 
             if (response.getStatusLine().getStatusCode() != 200) {
@@ -50,8 +48,9 @@ public class ChampionService {
             while (fieldNames.hasNext()) {
                 String championKey = fieldNames.next();
                 JsonNode champion = dataNode.get(championKey);
+
                 String championName = champion.get("id").asText();
-                String championImage = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/champion/" + championName + ".png";
+                String championImage = championImageUrl(championName);
                 champions.add(new ChampionDTO(championName, championImage));
             }
             return champions;
@@ -62,11 +61,10 @@ public class ChampionService {
     }
 
     public ChampionInfoDTO getChampionInfo(String championName) {
-        String requestUrl = "https://ddragon.leagueoflegends.com/cdn/14.23.1/data/ko_KR/champion/" + championName + ".json";
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
 
-            HttpGet request = new HttpGet(requestUrl);
+            HttpGet request = new HttpGet(championDetailUrl(championName));
             CloseableHttpResponse response = client.execute(request);
 
             if (response.getStatusLine().getStatusCode() != 200) {
@@ -86,5 +84,13 @@ public class ChampionService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String championImageUrl(String championName) {
+        return String.format(RiotConstant.CHAMPION_IMAGE_URL, championName);
+    }
+
+    public String championDetailUrl(String championName) {
+        return String.format(RiotConstant.CHAMPION_DETAIL_REQUEST_URL, championName);
     }
 }
