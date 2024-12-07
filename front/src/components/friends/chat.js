@@ -13,7 +13,7 @@ function ChatWindow({ friendName, friendTier, friendsData = [] }) {
     type: 'sent'
   }]);
   const [inputValue, setInputValue] = useState('');
-  const [isFriend, setIsFriend] = useState(friendsData.some(friend => friend.name === friendName));
+  const [isFriend, setIsFriend] = useState(false);
 
   // 프로필 이미지 URL 정의 (예시로 빈 문자열을 사용할 경우 기본 회색 원이 보임)
   const friendImageUrl = ''; // 이미지가 없을 때 빈 문자열
@@ -51,6 +51,11 @@ function ChatWindow({ friendName, friendTier, friendsData = [] }) {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    // friendsData가 변경될 때 isFriend 상태 업데이트
+    setIsFriend(friendsData.some(friend => friend.name === friendName));
+  }, [friendsData, friendName]);
+
   return (
     <div className="chat-container">
       <div className="chat-header">
@@ -67,9 +72,6 @@ function ChatWindow({ friendName, friendTier, friendsData = [] }) {
             <span>{friendName}</span>
           </div>
         </div>
-        <button className="friend-action-button" onClick={handleFriendAction}>
-          {isFriend ? '-' : '+'}
-        </button>
       </div>
       <div className="chat-messages">
         {messages.map((message, index) => (
