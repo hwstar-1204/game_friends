@@ -34,6 +34,15 @@ function FriendList({ friendsData, onChat, onRecord }) {
     setTooltip({ visible: false, text: '', x: 0, y: 0 });
   };
 
+  const handleRemoveFriend = (friendName) => {
+    const confirmDelete = window.confirm(`${friendName} 님을 친구 목록에서 삭제하시겠습니까?`);
+    if (confirmDelete) {
+      const updatedFriends = friends.filter((friend) => friend.name !== friendName);
+      setFriends(updatedFriends);
+      alert(`${friendName} 님이 친구 목록에서 삭제되었습니다.`);
+    }
+  };
+
   return (
     <div className="friend-list">
       <h3>친구 리스트</h3>
@@ -62,6 +71,12 @@ function FriendList({ friendsData, onChat, onRecord }) {
                     onClick={() => onChat(friend.name, friend.tier)}
                   >
                     채팅
+                  </button>
+                  <button 
+                    className="friend-button" 
+                    onClick={() => handleRemoveFriend(friend.name)}
+                  >
+                    -
                   </button>
                 </div>
               </div>
