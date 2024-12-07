@@ -37,6 +37,10 @@ function Template({ children, friendsData }) {
     navigate(`/record?friend=${friendName}`, { state: { friendsData } });
   };
 
+  const handleChampionInfo = () => {
+    navigate('/champion', { state: { friendsData } });
+  };
+
   const handleSidebarClose = () => {
     setSidebarVisible(false);
   };
@@ -63,6 +67,13 @@ function Template({ children, friendsData }) {
             onClick={() => setSidebarVisible(!sidebarVisible)}
           >
             메뉴
+          </button>
+
+          <button 
+            className="champion-icon"
+            onClick={handleChampionInfo}
+          >
+            챔피언 정보
           </button>
 
           <button 
