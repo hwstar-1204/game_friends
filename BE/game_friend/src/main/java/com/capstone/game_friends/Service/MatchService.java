@@ -1,7 +1,9 @@
 package com.capstone.game_friends.Service;
 
-import com.capstone.game_friends.DTO.*;
+import com.capstone.game_friends.Constant.RiotConstant;
 import com.capstone.game_friends.DTO.Riot.*;
+import com.capstone.game_friends.DTO.PuuIdRequestDTO;
+import com.capstone.game_friends.DTO.PuuIdResponseDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
@@ -26,8 +28,9 @@ import java.util.*;
 public class MatchService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final SummonerService summonerService;
-    private final String start = "0";
-    private final String count = "5";
+    private final long startTime = Instant.now().getEpochSecond();
+    private final long endTime = Instant.now().minus(3, ChronoUnit.DAYS).getEpochSecond();
+
     @Value("${riot.api.key}")
     private String apiKey;
 
