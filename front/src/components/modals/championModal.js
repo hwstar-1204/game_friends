@@ -1,12 +1,25 @@
 // src/components/modals/championModal.js
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './championModal.css';
 
 function ChampionModal({ isOpen, onClose, championData }) {
+  const [skillDescription, setSkillDescription] = useState({
+    name: '스킬 설명',
+    description: '확인하려는 스킬을 클릭하세요.'
+  });
+
   if (!isOpen) return null;
 
-  const imageUrl = '/img/user.png'; // 기본 이미지 경로로 고정
+  const handleSkillClick = (skill) => {
+    const skillData = championData.skills[skill];
+    if (skillData) {
+      setSkillDescription(skillData);
+    }
+  };
+  
+
+  const imageUrl = championData.imageUrl;
 
   return (
     <div className="champion-modal-overlay" onClick={onClose}>
@@ -19,20 +32,25 @@ function ChampionModal({ isOpen, onClose, championData }) {
                 backgroundImage: `url(${imageUrl})`,
             }}
             ></div>
-            <h3>{championData.name}</h3>
+            <div className="champion-name">
+              <h4>{championData.role.split(', ').slice(0, 2).join(' / ')}</h4>
+              <h3>{championData.name}</h3>
+            </div>
         </div>
 
         <p>{championData.description}</p>
         
         <div className="champion-skills-icon">
-            <div className="champion-skills-info">P</div>
-            <div className="champion-skills-info">Q</div>
-            <div className="champion-skills-info">W</div>
-            <div className="champion-skills-info">E</div>
-            <div className="champion-skills-info">R</div>
+            <div className="champion-skills-info" onClick={() => handleSkillClick('P')}>P</div>
+            <div className="champion-skills-info" onClick={() => handleSkillClick('Q')}>Q</div>
+            <div className="champion-skills-info" onClick={() => handleSkillClick('W')}>W</div>
+            <div className="champion-skills-info" onClick={() => handleSkillClick('E')}>E</div>
+            <div className="champion-skills-info" onClick={() => handleSkillClick('R')}>R</div>
         </div>
+        
         <div className="champion-skills-description">
-
+            <h2>{skillDescription.name}</h2>
+            <h4>{skillDescription.description}</h4>
         </div>
       </div>
     </div>
@@ -47,7 +65,30 @@ ChampionModal.propTypes = {
     imageUrl: PropTypes.string,
     role: PropTypes.string.isRequired,
     description: PropTypes.string,
+    skills: PropTypes.shape({
+      P: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+      }),
+      Q: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+      }),
+      W: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+      }),
+      E: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+      }),
+      R: PropTypes.shape({
+        name: PropTypes.string,
+        description: PropTypes.string,
+      }),
+    }).isRequired,
   }).isRequired,
 };
+
 
 export default ChampionModal;

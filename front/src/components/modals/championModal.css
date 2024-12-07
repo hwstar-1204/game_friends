@@ -15,6 +15,7 @@
 
 .champion-modal-content {
     background: #1e1e1e;
+    border: 1px solid #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -24,6 +25,7 @@
     text-align: center;
     position: relative;
 }
+
 
 .champion-modal-content h3 {
     margin: 0;
@@ -46,6 +48,19 @@
     background-color: #333;
     background-size: cover;
     background-position: center;
+}
+
+.champion-name {
+    text-align: left;
+}
+
+.champion-name h4 {
+    margin-bottom: 5px;
+    margin-top: 0px;
+}
+
+.champion-name h3 {
+    margin-top: 0;
 }
 
 .champion-close-button {
