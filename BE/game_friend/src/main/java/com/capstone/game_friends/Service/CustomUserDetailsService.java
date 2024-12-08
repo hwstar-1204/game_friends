@@ -76,7 +76,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         friendsRepository.deleteRelationship(senderUserId, receiverUserId);
     }
     public void friendStatus(Long receiverUserId, Long senderUserId, Status status){
-        friendsRepository.updateStatus(receiverUserId, senderUserId, status);
+        friendsRepository.updateStatus(senderUserId, receiverUserId, status);
     }
 
 
