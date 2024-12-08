@@ -55,6 +55,14 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    public List<FriendResponseDTO> getWaitingFriends(Long userId){
+        Member member = memberRepository.findById(userId).orElseThrow();
+
+        return friendsRepository.findWaitingFriendIdsByUserId(member).stream()
+                .map(FriendResponseDTO::of)
+                .collect(Collectors.toList());
+    }
+
     public void friendRequest(Long senderId, Long receiverId){
         Friends friends = new Friends();
 

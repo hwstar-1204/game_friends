@@ -19,7 +19,12 @@ public interface FriendsRepository extends JpaRepository<Friends,Long> {
     @Query("SELECT f.receiverUser FROM Friends f WHERE f.senderUser = :user AND f.status = 'accepted' " +
         "UNION " +
         "SELECT f.senderUser FROM Friends f WHERE f.receiverUser = :user AND f.status = 'accepted'")
-        List<Member> findAcceptedFriendIdsByUserId(@Param("user") Member user);
+    List<Member> findAcceptedFriendIdsByUserId(@Param("user") Member user);
+
+    @Query("SELECT f.receiverUser FROM Friends f WHERE f.senderUser = :user AND f.status = 'waiting' " +
+            "UNION " +
+            "SELECT f.senderUser FROM Friends f WHERE f.receiverUser = :user AND f.status = 'waiting'")
+    List<Member> findWaitingFriendIdsByUserId(@Param("user") Member user);
 
     @Modifying
     @Query("DELETE FROM Friends r WHERE (r.senderUser.id = :senderUser AND r.receiverUser.id = :receiverUserId) OR (r.senderUser.id = :receiverUserId AND r.receiverUser.id = :senderUser)")

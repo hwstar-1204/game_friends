@@ -20,39 +20,38 @@ import java.util.Map;
 public class UserController {
     private final CustomUserDetailsService customUserDetailsService;
 
-    @PostMapping("/friends")
+    @GetMapping("/friends") // 친구 조회 get요청으로 수정
     public ResponseEntity<List<FriendResponseDTO>> getFriends(){
         return ResponseEntity.ok(customUserDetailsService.getFriends(SecurityUtil.getCurrentMemberId()));
     }
 
-//    @PostMapping("/friendrequest")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void friendRequest(@RequestBody Map<String, Long> requestBody){
-//        Long friendId = requestBody.get("friendId");
-//        customUserDetailsService.friendRequest(SecurityUtil.getCurrentMemberId(), friendId);
-//    }
-    @PostMapping("/friendrequest/{friendId}")
+    @GetMapping("/friendswaiting") //대기 중인 친구 조회
+    public ResponseEntity<List<FriendResponseDTO>> getfriendswaiting(){
+        return ResponseEntity.ok(customUserDetailsService.getWaitingFriends(SecurityUtil.getCurrentMemberId()));
+    }
+
+    @PostMapping("/friendrequest/{friendId}") //친구요청
     @ResponseStatus(HttpStatus.OK)
     public void friendRequest(@PathVariable Long friendId) {
         Long currentMemberId = SecurityUtil.getCurrentMemberId();
         customUserDetailsService.friendRequest(currentMemberId, friendId);
     }
 
-    @PostMapping("/deletefriend")
+    @PostMapping("/deletefriend") //친구 삭제
     @ResponseStatus(HttpStatus.OK)
     public void deleteFriend(@RequestBody Map<String, Long> requestBody) { //json { friendId : (ex)1  }
         Long friendId = requestBody.get("friendId");
         customUserDetailsService.deleteFriend(SecurityUtil.getCurrentMemberId(), friendId);
     }
 
-    @PostMapping("/acceptfriend")
+    @PostMapping("/acceptfriend") //친구 수락
     @ResponseStatus(HttpStatus.OK)
     public void acceptFriend(@RequestBody Map<String, Long> requestBody){
         Long senderId = requestBody.get("friendId");
         customUserDetailsService.friendStatus(SecurityUtil.getCurrentMemberId(),senderId, Status.accepted);
     }
 
-    @PostMapping("/declinedfriend")
+    @PostMapping("/declinedfriend") //친구 거절
     @ResponseStatus(HttpStatus.OK)
     public void declinedFriend(@RequestBody Map<String, Long> requestBody){
         Long senderId = requestBody.get("friendId");
