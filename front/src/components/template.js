@@ -54,6 +54,12 @@ function Template({ children, friendsData }) {
     setModalType(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    setIsLoggedIn(false);
+    setSidebarVisible(false);
+  };
+
   return (
     <div className={`main-container ${sidebarVisible ? 'sidebar-visible' : ''}`} onClick={(e) => sidebarVisible && e.currentTarget === e.target && setSidebarVisible(false)}>
       <header className="main-header">
@@ -111,7 +117,7 @@ function Template({ children, friendsData }) {
           >
             비밀번호 변경
           </button>
-          <button className="sidebar-button-logout" onClick={() => { setIsLoggedIn(false); setSidebarVisible(false); }}>로그아웃</button>
+          <button className="sidebar-button-logout" onClick={handleLogout}>로그아웃</button>
           <button className="close-button" onClick={handleSidebarClose}>X</button>
         </div>
       )}
