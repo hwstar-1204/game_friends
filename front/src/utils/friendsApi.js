@@ -7,14 +7,27 @@ const friendsApi = {
         return response;
     },
 
-    // TODO : 친구 요청 
+    // 친구 요청 
     requestFriend: async (friendId) => {
-        const data = {
-            "email" : "String",
-            "password" : "String",
-            "nickname" : "String"
-    }
-        const response = await apiClient.post('/user/friendrequest', data);
+        const response = await apiClient.post(`/user/friendrequest/${friendId}`);
+        return response;
+    },
+    
+    // 친구 요청 수락 
+    acceptFriend: async (friendId) => {
+        const response = await apiClient.post(`/user/acceptfriend/`, friendId);
+        return response;
+    },
+
+    // 친구 요청 거절 
+    rejectFriend: async (friendId) => {
+        const response = await apiClient.post(`/user/declinedfriend/`, friendId);
+        return response;
+    },
+
+    // 친구 삭제 
+    deleteFriend: async (friendId) => {
+        const response = await apiClient.post(`/user/deletefriend/`, friendId);
         return response;
     }
 }
