@@ -6,6 +6,7 @@ import './template.css';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
 import FriendRequestModal from '../components/modals/friendRequests';
+import LolConnectModal from '../components/modals/lolConnect';
 
 function Template({ children, friendsData }) {
   const [chatWindow, setChatWindow] = useState(null);
@@ -124,11 +125,22 @@ function Template({ children, friendsData }) {
           >
             친구 요청 대기
           </button>
+          <button 
+            className="sidebar-button-lol-connect" 
+            onClick={() => setModalType('lol-connect')}
+          >
+            계정 연동
+          </button>
+
           <button className="sidebar-button-logout" onClick={handleLogout}>로그아웃</button>
           <button className="close-button" onClick={handleSidebarClose}>X</button>
         </div>
       )}
-      {modalType === 'request-friends' ? (
+      {modalType === 'lol-connect' ? (
+        <LolConnectModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType === 'request-friends' ? (
         <FriendRequestModal
           onClose={() => setModalType(null)}
         />
