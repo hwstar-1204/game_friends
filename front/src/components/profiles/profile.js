@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { summonerApi } from '../../utils/riotapi';
+import riotApi from '../../utils/riotapi';
 import './profile.css';
 
 
@@ -11,7 +11,7 @@ function ProfilePage() {
     
     useEffect(() => {
         const fetchMyProfile = async () => {
-            const response = await summonerApi(gameName, tagLine);
+            const response = await riotApi.summonerApi(gameName, tagLine);
             console.log(response);
             setMySummonerInfo(response);
         };
