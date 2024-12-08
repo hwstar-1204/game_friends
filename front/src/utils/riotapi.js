@@ -7,8 +7,8 @@ const riotApi = {
         return response;
     },
 
-    matchApi: async (puuid) => {
-        const response = await apiClient.post(`/match/history`, { puuid }); // 닉네임으로 변경 예정
+    matchApi: async (gameName, tagLine) => {
+        const response = await apiClient.post(`/match/history`, { gameName, tagLine }); // 닉네임으로 변경 예정
         return response;
     },
 
