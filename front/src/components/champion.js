@@ -23,18 +23,22 @@ function Champion() {
     try {
       const championInfo = await riotApi.getChampionInfo(champion.name);
       // console.log('챔피언 상세 정보:', championInfo);
+      const championName = championInfo.name;
       const role = championInfo.tags[0] + ', ' + (championInfo.tags[1] ? championInfo.tags[1] : '');
+      const description = championInfo.blurb;
+      const spells = championInfo.spells;
+
       const championData = {
-        name: champion.name,
+        name: championName,
         imageUrl: champion.imageUrl,
         role: role,
-        description: `Description for ${champion.name}`,
+        description: description,
         skills: {
           P: { name: 'Passive', description: 'This is the champion passive skill.', imageUrl: `/path/to/skill_P.png` },
-          Q: { name: 'Q Skill', description: 'This is the champion Q skill.', imageUrl: `/path/to/skill_Q.png` },
-          W: { name: 'W Skill', description: 'This is the champion W skill.', imageUrl: `/path/to/skill_W.png` },
-          E: { name: 'E Skill', description: 'This is the champion E skill.', imageUrl: `/path/to/skill_E.png` },
-          R: { name: 'R Skill', description: 'This is the champion ultimate skill.', imageUrl: `/path/to/skill_R.png` }
+          Q: { name: spells[0].name, description: spells[0].description, imageUrl: spells[0].image.full },
+          W: { name: spells[1].name, description: spells[1].description, imageUrl: spells[1].image.full },
+          E: { name: spells[2].name, description: spells[2].description, imageUrl: spells[2].image.full },
+          R: { name: spells[3].name, description: spells[3].description, imageUrl: spells[3].image.full }
         },
       };
       setSelectedChampion(championData);
