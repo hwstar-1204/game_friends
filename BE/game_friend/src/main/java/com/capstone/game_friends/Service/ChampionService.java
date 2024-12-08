@@ -76,8 +76,10 @@ public class ChampionService {
             JsonNode data = champion.get("data");
             JsonNode firstField = data.fields().next().getValue();
             ChampionInfoDTO championInfoDTO = objectMapper.treeToValue(firstField, ChampionInfoDTO.class);
-            for(SpellDTO s : championInfoDTO.getSpells()) {
-                s.getImage().setFull("https://ddragon.leagueoflegends.com/cdn/14.23.1/img/spell/"+ s.getImage().getFull());
+            championInfoDTO.getPassive().getImage().setFull(
+                    passiveImageUrl(championInfoDTO.getPassive().getImage().getFull()));
+            for (SpellDTO s : championInfoDTO.getSpells()) {
+                s.getImage().setFull(spellImageUrl(s));
             }
             return championInfoDTO;
         } catch (IOException e) {
@@ -92,5 +94,15 @@ public class ChampionService {
 
     public String championDetailUrl(String championName) {
         return String.format(RiotConstant.CHAMPION_DETAIL_REQUEST_URL, championName);
+    }
+
+    // 스킬 이미지 url
+    public String spellImageUrl(SpellDTO spellDTO) {
+        return String.format(RiotConstant.SPELL_IMAGE_URL, spellDTO.getImage().getFull());
+    }
+
+    // 패시브 이미지 url
+    public String passiveImageUrl(String passive) {
+        return String.format(RiotConstant.PASSIVE_IMAGE_URL, passive);
     }
 }
