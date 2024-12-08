@@ -26,6 +26,7 @@ function Champion() {
       const championName = championInfo.name;
       const role = championInfo.tags[0] + ', ' + (championInfo.tags[1] ? championInfo.tags[1] : '');
       const description = championInfo.blurb;
+      const passive = championInfo.passive;
       const spells = championInfo.spells;
 
       const championData = {
@@ -34,7 +35,7 @@ function Champion() {
         role: role,
         description: description,
         skills: {
-          P: { name: 'Passive', description: 'This is the champion passive skill.', imageUrl: `/path/to/skill_P.png` },
+          P: { name: passive.name, description: passive.description, imageUrl: passive.image.full },
           Q: { name: spells[0].name, description: spells[0].description, imageUrl: spells[0].image.full },
           W: { name: spells[1].name, description: spells[1].description, imageUrl: spells[1].image.full },
           E: { name: spells[2].name, description: spells[2].description, imageUrl: spells[2].image.full },
