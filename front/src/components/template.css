@@ -57,6 +57,23 @@ body {
     border: none;
 }
 
+.champion-icon {
+    width: 120px;
+    height: 40px;
+    background-color: #28a745;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    border: none;
+    margin-right: 20px;
+}
+
 .main-contents {
     display: flex;
     flex: 1;
