@@ -25,5 +25,6 @@ public class ChampionInfoDTO {
     private String blurb; // 챔피언의 간단한 소개글
     private List<String> tags; // 챔피언의 역할 태그 (예: "Fighter", "Tank")
     private List<SpellDTO> spells; // 챔피언의 스킬 정보 (Q, W, E, R)
+    private PassiveDTO passive; // 챔피언의 패시브 스킬 정보
 }
 
