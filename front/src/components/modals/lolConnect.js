@@ -10,13 +10,15 @@ function LolConnectModal({ onClose }) {
     e.preventDefault();
 
     try {
-      console.log(gameName, tagLine);
-      const response = await riotApi.summonerApi(gameName, tagLine);
+      // URL 인코딩을 사용하여 한글 닉네임 처리
+      const encodedGameName = encodeURIComponent(gameName);
+      console.log(encodedGameName, tagLine);
+      const response = await riotApi.summonerApi(encodedGameName, tagLine);
       console.log(response);
       alert('계정 연동이 완료되었습니다.');
       onClose();
     } catch (error) {   
-      alert('계정 연동 중 오류가 발생했습니다.');
+      alert('계정 연동 중 오류가 발생했습니다. 닉네임과 태그를 다시 확인해주세요.');
       console.error(error);
     }
   };
