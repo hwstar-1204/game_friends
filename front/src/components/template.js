@@ -5,6 +5,7 @@ import '../components/friends/friends.css';
 import './template.css';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
+import FriendRequestModal from '../components/modals/friendRequests';
 
 function Template({ children, friendsData }) {
   const [chatWindow, setChatWindow] = useState(null);
@@ -117,11 +118,21 @@ function Template({ children, friendsData }) {
           >
             비밀번호 변경
           </button>
+          <button 
+            className="sidebar-button-request-friends"
+            onClick={() => setModalType('request-friends')}
+          >
+            친구 요청 대기
+          </button>
           <button className="sidebar-button-logout" onClick={handleLogout}>로그아웃</button>
           <button className="close-button" onClick={handleSidebarClose}>X</button>
         </div>
       )}
-      {modalType && (
+      {modalType === 'request-friends' ? (
+        <FriendRequestModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType && (
         <AccountChangeModal 
           type={modalType} 
           onClose={() => setModalType(null)} 

@@ -3,13 +3,19 @@ import apiClient from './api';
 const friendsApi = {
     // 친구 리스트 조회 
     getFriendsList: async () => {  
-        const response = await apiClient.post('/user/friends');
+        const response = await apiClient.get('/user/friends');
         return response;
     },
 
     // 친구 요청 
     requestFriend: async (friendId) => {
         const response = await apiClient.post(`/user/friendrequest/${friendId}`);
+        return response;
+    },
+
+    // 친구 요청 목록 조회
+    getFriendRequests: async () => {
+        const response = await apiClient.get('/user/friendswaiting');
         return response;
     },
     
