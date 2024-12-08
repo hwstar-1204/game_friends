@@ -21,22 +21,21 @@ const friendsApi = {
     
     // 친구 요청 수락 
     acceptFriend: async (friendId) => {
-        const response = await apiClient.post(`/user/acceptfriend/`, friendId);
+        const response = await apiClient.post('/user/acceptfriend', { friendId });
         return response;
     },
 
     // 친구 요청 거절 
     rejectFriend: async (friendId) => {
-        const response = await apiClient.post(`/user/declinedfriend/`, friendId);
+        const response = await apiClient.post(`/user/declinedfriend`, { friendId });
         return response;
     },
 
     // 친구 삭제 
     deleteFriend: async (friendId) => {
-        const response = await apiClient.post(`/user/deletefriend/`, friendId);
+        const response = await apiClient.post(`/user/deletefriend`, { friendId });
         return response;
     }
 }
-
 
 export default friendsApi;

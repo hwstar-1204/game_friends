@@ -9,15 +9,12 @@ function FriendRequestsModal({ onClose }) {
     const fetchFriendRequests = async () => {
       try {
         const response = await friendsApi.getFriendRequests();
-        // API 응답에서 대기 중인 친구 요청만 필터링
-        // setFriendRequests(response.data.filter(request => request.status === 'pending'));
-        console.log(response.data, "response.data")
-        if (response.data.length > 0) {
-            console.log(response.data)
-          setFriendRequests(response.data);
+        if (response.length > 0) {
+          setFriendRequests(response);
         }
       } catch (error) {
         console.error('친구 요청 목록을 불러오는데 실패했습니다:', error);
+        alert('친구 요청 목록을 불러오는데 실패했습니다. 다시 시도해주세요.');
       }
     };
 
@@ -26,25 +23,32 @@ function FriendRequestsModal({ onClose }) {
 
   const handleAccept = async (friendId) => {
     try {
-      await friendsApi.acceptFriend(friendId);
-      // 수락된 요청을 목록에서 제거
-      setFriendRequests(prevRequests => 
-        prevRequests.filter(request => request.id !== friendId)
-      );
+        const response = await friendsApi.acceptFriend(friendId);
+        if (response.status === 200 || response.ok) {
+            setFriendRequests(prevRequests => 
+                prevRequests.filter(request => request.id !== friendId)
+            );
+            alert('친구 요청이 성공적으로 수락되었습니다.');
+        }
     } catch (error) {
-      console.error('친구 요청 수락에 실패했습니다:', error);
+        console.error('친구 요청 수락 중 오류:', error);
+        alert('친구 요청 수락 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
   const handleReject = async (friendId) => {
     try {
-      await friendsApi.rejectFriend(friendId);
-      // 거절된 요청을 목록에서 제거
-      setFriendRequests(prevRequests => 
-        prevRequests.filter(request => request.id !== friendId)
-      );
+      const response = await friendsApi.rejectFriend(friendId);
+      
+      if (response.status === 200 || response.ok) {
+        setFriendRequests(prevRequests => 
+          prevRequests.filter(request => request.id !== friendId)
+        );
+        alert('친구 요청이 거절되었습니다.');
+      }
     } catch (error) {
-      console.error('친구 요청 거절에 실패했습니다:', error);
+      console.error('친구 요청 거절에 실패했습니다:', error.message);
+      alert('친구 요청 거절 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
