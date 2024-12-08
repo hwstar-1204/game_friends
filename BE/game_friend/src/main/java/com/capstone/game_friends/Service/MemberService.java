@@ -28,6 +28,11 @@ public class MemberService {
         return new SummonerResponseDTO(member.getSummonerInfo());
     }
 
+    public Member findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname)
+                .orElseThrow(()->new RuntimeException("존재하지 않는 닉네임"));
+    }
+
     @Transactional
     public MemberResponseDTO changeMemberPassword(String prePassword, String newPassword){
         Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(()-> new RuntimeException("Error"));
