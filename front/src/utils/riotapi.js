@@ -7,8 +7,8 @@ const riotApi = {
         return response;
     },
 
-    matchApi: async (gameName, tagLine) => {
-        const response = await apiClient.post(`/match/history`, { gameName, tagLine }); // 닉네임으로 변경 예정
+    matchApi: async (nickname) => {
+        const response = await apiClient.get(`/riot/match/history/friends?nickname=${nickname}`);
         return response;
     },
 

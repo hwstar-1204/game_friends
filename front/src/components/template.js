@@ -71,14 +71,14 @@ function Template({ children, friendsData }) {
         </div>
         <div className="header-right">
           <button 
-            className="profile-icon-test" 
+            className="profile-icon" 
             onClick={() => setSidebarVisible(!sidebarVisible)}
           >
             메뉴
           </button>
 
           <button 
-            className="champion-icon"
+            className="champion-info-icon"
             onClick={handleChampionInfo}
           >
             챔피언 정보
