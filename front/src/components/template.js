@@ -20,13 +20,13 @@ function Template({ children, friendsData }) {
     setIsLoggedIn(!!token);
   }, []);
 
-  const handleChat = (friendName, friendTier) => {
+  const handleChat = (friendNickname, friendTier) => {
     if (chatWindow && !chatWindow.closed) {
-      chatWindow.location.href = `/chat?friend=${friendName}&tier=${friendTier}`;
+      chatWindow.location.href = `/chat?friend=${friendNickname}&tier=${friendTier}`;
       chatWindow.focus();
     } else {
       const newChatWindow = window.open(
-        `/chat?friend=${friendName}&tier=${friendTier}`,
+        `/chat?friend=${friendNickname}&tier=${friendTier}`,
         '_blank',
         'width=400,height=600,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes'
       );
@@ -35,8 +35,8 @@ function Template({ children, friendsData }) {
     }
   };
 
-  const handleRecord = (friendName) => {
-    navigate(`/record?friend=${friendName}`, { state: { friendsData } });
+  const handleRecord = (friendNickname) => {
+    navigate(`/record?friend=${friendNickname}`, { state: { friendsData } });
   };
 
   const handleChampionInfo = () => {
