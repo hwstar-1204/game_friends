@@ -15,6 +15,8 @@ function LolConnectModal({ onClose }) {
       console.log(encodedGameName, tagLine);
       const response = await riotApi.summonerApi(encodedGameName, tagLine);
       console.log(response);
+      localStorage.setItem('gameName', response.gameName);
+      localStorage.setItem('tagLine', response.tagLine);
       alert('계정 연동이 완료되었습니다.');
       onClose();
     } catch (error) {   

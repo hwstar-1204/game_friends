@@ -58,8 +58,11 @@ function Template({ children, friendsData }) {
 
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('gameName');
+    localStorage.removeItem('tagLine');
     setIsLoggedIn(false);
     setSidebarVisible(false);
+    navigate('/');
   };
 
   return (

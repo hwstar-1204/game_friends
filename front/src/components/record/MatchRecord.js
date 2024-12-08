@@ -34,10 +34,11 @@ function MatchRecord({ matches }) {
         const { matchInfoDTO, playerStatsDTO } = match;
         
         const currentPlayer = playerStatsDTO.find(player => 
-          player.riotIdGameName === new URLSearchParams(window.location.search).get('friend')
+          player.riotIdGameName === localStorage.getItem('gameName')
         );
         
         const isWin = currentPlayer?.win || false;
+        // const isWin = true;
 
         return (
           <div 

@@ -6,13 +6,15 @@ import './profile.css';
 function ProfilePage() {
     const [mySummonerInfo, setMySummonerInfo] = useState(null);
     // 게임 닉네임, 태그라인 데이터를 
-    const gameName = "Quad";  // 롤 게임 닉네임
-    const tagLine = "123";    // 태그라인 (# 제외)
+    const gameName = localStorage.getItem('gameName');
+    const tagLine = localStorage.getItem('tagLine');
     
     useEffect(() => {
         const fetchMyProfile = async () => {
-            const response = await riotApi.summonerApi(gameName, tagLine);
-            console.log(response);
+          console.log(gameName, tagLine);
+          const encodedGameName = encodeURIComponent(gameName);
+          const response = await riotApi.summonerApi(encodedGameName, tagLine);
+          console.log(response);
             setMySummonerInfo(response);
         };
         fetchMyProfile();
