@@ -19,27 +19,36 @@ function Champion() {
     fetchChampionList();
   }, []);
 
+  const handleChampionClick = async (champion) => {
+    try {
+      const championInfo = await riotApi.getChampionInfo(champion.name);
+      // console.log('챔피언 상세 정보:', championInfo);
+      const role = championInfo.tags[0] + ', ' + (championInfo.tags[1] ? championInfo.tags[1] : '');
+      const championData = {
+        name: champion.name,
+        imageUrl: champion.imageUrl,
+        role: role,
+        description: `Description for ${champion.name}`,
+        skills: {
+          P: { name: 'Passive', description: 'This is the champion passive skill.', imageUrl: `/path/to/skill_P.png` },
+          Q: { name: 'Q Skill', description: 'This is the champion Q skill.', imageUrl: `/path/to/skill_Q.png` },
+          W: { name: 'W Skill', description: 'This is the champion W skill.', imageUrl: `/path/to/skill_W.png` },
+          E: { name: 'E Skill', description: 'This is the champion E skill.', imageUrl: `/path/to/skill_E.png` },
+          R: { name: 'R Skill', description: 'This is the champion ultimate skill.', imageUrl: `/path/to/skill_R.png` }
+        },
+      };
+      setSelectedChampion(championData);
+    } catch (error) {
+      console.error('챔피언 정보 조회 중 오류 발생:', error);
+    }
+  };
 
-  const buttons = champions.map((champion, index) => {
-    const championData = {
-      name: champion.name,
-      imageUrl: champion.imageUrl,
-      role: 'Mage, Tank', // 챔피언 역할군 (최대 2개, ',' 표시로 구분)
-      description: `Description for ${champion.name}`, // 챔피언 설명
-      skills: {
-        P: { name: 'Passive', description: 'This is the champion passive skill.', imageUrl: `/path/to/skill${index + 1}_P.png` },
-        Q: { name: 'Q Skill', description: 'This is the champion Q skill.', imageUrl: `/path/to/skill${index + 1}_Q.png` },
-        W: { name: 'W Skill', description: 'This is the champion W skill.', imageUrl: `/path/to/skill${index + 1}_W.png` },
-        E: { name: 'E Skill', description: 'This is the champion E skill.', imageUrl: `/path/to/skill${index + 1}_E.png` },
-        R: { name: 'R Skill', description: 'This is the champion ultimate skill.', imageUrl: `/path/to/skill${index + 1}_R.png` }
-      },
-    };
-
+  const detailButtons = champions.map((champion, index) => {
     return (
       <button 
         key={index} 
         className="image-button"
-        onClick={() => setSelectedChampion(championData)}
+        onClick={() => handleChampionClick(champion)}
         style={{ 
           width: '100px', 
           height: '100px', 
@@ -60,7 +69,7 @@ function Champion() {
           <h1 className="champion-title">챔피언 목록</h1>
         </div>
         <div className="image-button-grid">
-          {buttons}
+          {detailButtons}
         </div>
       </div>
       {selectedChampion && (
