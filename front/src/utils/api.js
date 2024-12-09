@@ -44,7 +44,11 @@ const apiClient = {
         throw new Error('API 요청 실패');
       }
 
-      return await response.json();
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        return await response.json();
+      }
+      return response;
     } catch (error) {
       console.error('API 오류:', error);
       throw error;

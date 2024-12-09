@@ -5,6 +5,8 @@ import '../components/friends/friends.css';
 import './template.css';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
+import FriendRequestModal from '../components/modals/friendRequests';
+import LolConnectModal from '../components/modals/lolConnect';
 
 function Template({ children, friendsData }) {
   const [chatWindow, setChatWindow] = useState(null);
@@ -18,13 +20,13 @@ function Template({ children, friendsData }) {
     setIsLoggedIn(!!token);
   }, []);
 
-  const handleChat = (friendName, friendTier) => {
+  const handleChat = (friendNickname, friendTier) => {
     if (chatWindow && !chatWindow.closed) {
-      chatWindow.location.href = `/chat?friend=${friendName}&tier=${friendTier}`;
+      chatWindow.location.href = `/chat?friend=${friendNickname}&tier=${friendTier}`;
       chatWindow.focus();
     } else {
       const newChatWindow = window.open(
-        `/chat?friend=${friendName}&tier=${friendTier}`,
+        `/chat?friend=${friendNickname}&tier=${friendTier}`,
         '_blank',
         'width=400,height=600,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes'
       );
@@ -33,8 +35,12 @@ function Template({ children, friendsData }) {
     }
   };
 
-  const handleRecord = (friendName) => {
-    navigate(`/record?friend=${friendName}`, { state: { friendsData } });
+  const handleRecord = (friendNickname) => {
+    navigate(`/record?friend=${friendNickname}`, { state: { friendsData } });
+  };
+
+  const handleChampionInfo = () => {
+    navigate('/champion', { state: { friendsData } });
   };
 
   const handleSidebarClose = () => {
@@ -50,6 +56,15 @@ function Template({ children, friendsData }) {
     setModalType(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('gameName');
+    localStorage.removeItem('tagLine');
+    setIsLoggedIn(false);
+    setSidebarVisible(false);
+    navigate('/');
+  };
+
   return (
     <div className={`main-container ${sidebarVisible ? 'sidebar-visible' : ''}`} onClick={(e) => sidebarVisible && e.currentTarget === e.target && setSidebarVisible(false)}>
       <header className="main-header">
@@ -59,10 +74,17 @@ function Template({ children, friendsData }) {
         </div>
         <div className="header-right">
           <button 
-            className="profile-icon-test" 
+            className="profile-icon" 
             onClick={() => setSidebarVisible(!sidebarVisible)}
           >
             메뉴
+          </button>
+
+          <button 
+            className="champion-info-icon"
+            onClick={handleChampionInfo}
+          >
+            챔피언 정보
           </button>
 
           <button 
@@ -100,11 +122,32 @@ function Template({ children, friendsData }) {
           >
             비밀번호 변경
           </button>
-          <button className="sidebar-button-logout" onClick={() => { setIsLoggedIn(false); setSidebarVisible(false); }}>로그아웃</button>
+          <button 
+            className="sidebar-button-request-friends"
+            onClick={() => setModalType('request-friends')}
+          >
+            친구 요청 대기
+          </button>
+          <button 
+            className="sidebar-button-lol-connect" 
+            onClick={() => setModalType('lol-connect')}
+          >
+            계정 연동
+          </button>
+
+          <button className="sidebar-button-logout" onClick={handleLogout}>로그아웃</button>
           <button className="close-button" onClick={handleSidebarClose}>X</button>
         </div>
       )}
-      {modalType && (
+      {modalType === 'lol-connect' ? (
+        <LolConnectModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType === 'request-friends' ? (
+        <FriendRequestModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType && (
         <AccountChangeModal 
           type={modalType} 
           onClose={() => setModalType(null)} 

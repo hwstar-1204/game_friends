@@ -14,7 +14,6 @@ import lombok.*;
 
 // 프로필에 표시될 소환사 랭크와 정보들
 public class SummonerResponseDTO {
-
     private long revisionDate;
     private String gameName;
     private String tagLine;

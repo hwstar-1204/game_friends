@@ -10,6 +10,7 @@ import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Repository.MemberRepository;
 import com.capstone.game_friends.Service.ChampionService;
 import com.capstone.game_friends.Service.MatchService;
+import com.capstone.game_friends.Service.MemberService;
 import com.capstone.game_friends.Service.SummonerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class RiotController {
     private final MemberRepository memberRepository;
     private final MatchService matchService;
     private final ChampionService championService;
+    private final MemberService memberService;
 
     // Riot 계정 연동
     @PostMapping("/account")
@@ -35,10 +37,21 @@ public class RiotController {
         return ResponseEntity.ok(summonerService.getSummoner(requestDTO, member));
     }
 
+    // 소환사명, 태그라인으로 전적검색
     @GetMapping("/match/history")
     public ResponseEntity<List<MatchResponseDTO>> getMatchList(@RequestBody PuuIdRequestDTO requestDTO) {
-        String str = "ranked";
-        return ResponseEntity.ok(matchService.getMatchList(requestDTO, str));
+        String gameType = "ranked";
+        return ResponseEntity.ok(matchService.getMatchList(requestDTO, gameType));
+    }
+
+
+    // 친구창에서 닉네임 전적검색
+    @GetMapping("/match/history/friends")
+    public ResponseEntity<List<MatchResponseDTO>> getMatchList(@RequestParam("nickname") String nickname) {
+        String gameType = "ranked";
+        Member member = memberService.findByNickname(nickname);
+        PuuIdRequestDTO requestDTO = new PuuIdRequestDTO(member.getSummonerInfo().getGameName(), member.getSummonerInfo().getTagLine());
+        return ResponseEntity.ok(matchService.getMatchList(requestDTO, gameType));
     }
 
     @GetMapping("/champions")
