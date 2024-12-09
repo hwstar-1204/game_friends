@@ -1,6 +1,7 @@
 // friends.js
 import React, { useEffect, useState } from 'react';
 import './friends.css';
+import friendsApi from '../../utils/friendsApi';
 
 function FriendList({ friendsData, onChat, onRecord }) {
   const [friends, setFriends] = useState([]);
@@ -34,6 +35,18 @@ function FriendList({ friendsData, onChat, onRecord }) {
     setTooltip({ visible: false, text: '', x: 0, y: 0 });
   };
 
+  const handleRemoveFriend = (friendId, friendName) => {
+    console.log(friendId, friendName)
+    const response = friendsApi.deleteFriend(friendId);
+    console.log(response)
+    const confirmDelete = window.confirm(`${friendName} 님을 친구 목록에서 삭제하시겠습니까?`);
+    if (confirmDelete) {
+      const updatedFriends = friends.filter((friend) => friend.id !== friendId);
+      setFriends(updatedFriends);
+      alert(`${friendName} 님이 친구 목록에서 삭제되었습니다.`);
+    }
+  };
+
   return (
     <div className="friend-list">
       <h3>친구 리스트</h3>
@@ -53,15 +66,21 @@ function FriendList({ friendsData, onChat, onRecord }) {
               <div className="friend-info">
                 <div className="friend-info-row">
                   <img src={`/img/tiers/${friend.tier}.png`} alt="티어 이미지" className="friend-tier" />
-                  <p className="friend-name">{friend.name}</p>
+                  <p className="friend-name">{friend.nickname}</p>
                 </div>
                 <div className="friend-actions">
-                  <button className="friend-button" onClick={() => onRecord(friend.name)}>전적 보기</button>
+                  <button className="friend-button" onClick={() => onRecord(friend.nickname)}>전적 보기</button>
                   <button
                     className="friend-button"
-                    onClick={() => onChat(friend.name, friend.tier)}
+                    onClick={() => onChat(friend.nickname, friend.tier)}
                   >
                     채팅
+                  </button>
+                  <button 
+                    className="friend-button" 
+                    onClick={() => handleRemoveFriend(friend.id, friend.nickname)}
+                  >
+                    -
                   </button>
                 </div>
               </div>

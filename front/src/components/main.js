@@ -25,14 +25,14 @@ function MainPage() {
     { name: '친구 10', status: 'online', tier: 'challenger', profileImage: '' },
     { name: '친구 11', status: 'in-game', tier: 'platinum', profileImage: '' },
     { name: '친구 12', status: 'in-game', tier: 'platinum', profileImage: '' },
-  ]
+  ];
   const testPlayersData = [
-    { name: '플레이어 1', tier: 'iron', profileImage: '' },
-    { name: '플레이어 2', tier: 'bronze', profileImage: '' },
-    { name: '플레이어 3', tier: 'silver', profileImage: '' },
-    { name: '플레이어 4', tier: 'gold', profileImage: '' },
-    { name: '플레이어 5', tier: 'platinum', profileImage: '' },
-  ]
+    { nickname: '플레이어 1', tier: 'iron', profileImage: '' },
+    { nickname: '플레이어 2', tier: 'bronze', profileImage: '' },
+    { nickname: '플레이어 3', tier: 'silver', profileImage: '' },
+    { nickname: '플레이어 4', tier: 'gold', profileImage: '' },
+    { nickname: '플레이어 5', tier: 'platinum', profileImage: '' },
+  ];
 
   useEffect(() => {
     // 데이터베이스에서 친구 데이터를 가져오는 로직 
@@ -43,17 +43,21 @@ function MainPage() {
         setFriendsData(response);
       } catch (error) {
         console.error('Error fetching friends list:', error);
-        setFriendsData(testFriendsData); // DB에서 못불러오면 테스트 데이터로 대체
+        // setFriendsData(testFriendsData); // DB에서 못불러오면 테스트 데이터로 대체
+        setFriendsData([]);
       }
     };
     fetchFriendsList();
 
-    // TODO: 데이터베이스에서 플레이어 데이터를 가져오는 로직 추가
+    // TODO: 매칭된 플레이어 데이터를 가져오는 로직 추가
     setPlayers(testPlayersData);
   }, []);
 
   const handleSearch = () => {
+    // navigate(`/record?friend=${encodeURIComponent(searchTerm)}`);
     navigate(`/record?friend=${searchTerm}`);
+
+    console.log(encodeURIComponent(searchTerm));
   };
 
   const handleChat = (friendName, friendTier) => {
@@ -71,16 +75,34 @@ function MainPage() {
     }
   };
 
+  const handleAddFriend = (player) => {
+    if (!friendsData.some(friend => friend.name === player.name)) {
+      const updatedFriends = [...friendsData, { ...player, status: 'online' }];
+      setFriendsData(updatedFriends);
+      alert(`${player.name} 님이 친구 목록에 추가되었습니다.`);
+    } else {
+      alert(`${player.name} 님은 이미 친구 목록에 있습니다.`);
+    }
+  };
+
+  const handleTest = async () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      navigate('/matching');
+    } else {
+      alert('로그인 후 이용해주세요.');
+    }
+  };
+
   return (
     <Template friendsData={friendsData}>
       <div className="main-contents-left">
         <div className="search-bar-container">
           <div className="region-selector">
-            <label htmlFor="region">지역</label>
+            <label htmlFor="region">계정</label>
             <select id="region" name="region">
-              <option value="korea">Korea</option>
-              <option value="na">NA</option>
-              <option value="eu">EU</option>
+              <option value="korea">아이디</option>
+              <option value="na">태그</option>
             </select>
           </div>
           <div className="search-section">
@@ -89,7 +111,7 @@ function MainPage() {
               type="text"
               id="player-search"
               className="search-bar"
-              placeholder="플레이어 이름 + #태그"
+              placeholder="플레이어를 입력하세요."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -99,6 +121,14 @@ function MainPage() {
           </div>
         </div>
         <img src={`/img/banner.png`} alt="웹 페이지 배너" className="banner"/>
+
+        <button
+          className="matching-button" 
+          onClick={handleTest}
+        >
+          게임 유저 매칭 시작
+        </button>
+        
         <div className="player-cards-banner">
           <h2>플레이어 추천</h2>
         </div>
@@ -114,12 +144,19 @@ function MainPage() {
                 }}
               ></div>
               <div className="player-info-row">
-                <p className="player-name">{player.name}</p>
+                <p className="player-name">{player.nickname}</p>
                 <img src={`/img/tiers/${player.tier}.png`} alt="티어 이미지" className="player-tier" />
               </div>
               <div className="player-actions">
                 <button className="player-button">전적 보기</button>
                 <button className="player-button" onClick={() => handleChat(player.name, player.tier)}>채팅</button>
+                
+                <button 
+                  className="player-button" 
+                  onClick={() => handleAddFriend(player)}
+                >
+                  +
+                </button>
               </div>
             </div>
           ))}

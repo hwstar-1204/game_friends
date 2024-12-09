@@ -1,0 +1,138 @@
+.match-history {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.match-record {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 16px;
+  color: #ffffff;
+}
+
+.match-record.win {
+  border-left: 4px solid #28a745;
+}
+
+.match-record.defeat {
+  border-left: 4px solid #dc3545;
+}
+
+.match-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.game-type {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.result {
+  font-weight: bold;
+}
+
+.teams-container {
+  display: flex;
+  gap: 20px;
+}
+
+.team {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.champion-info {
+  display: flex;
+  gap: 4px;
+  background: transparent;
+}
+
+.champion-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.summoner-spells {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summoner-spells img {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-name {
+  font-weight: bold;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.kda {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.deaths {
+  color: #dc3545;
+}
+
+.kda-ratio {
+  margin-left: 8px;
+  color: #ffd700;
+}
+
+.items {
+  display: flex;
+  gap: 4px;
+}
+
+.item-slot {
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.item-slot img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 100px;
+  text-align: right;
+}
+
+.champion-info img {
+  background: transparent;
+} 

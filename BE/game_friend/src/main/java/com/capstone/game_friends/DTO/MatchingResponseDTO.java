@@ -26,7 +26,7 @@ public class MatchingResponseDTO {
         return MatchingResponseDTO.builder().
                 memberId(member.getId()).
                 chatRoomId(chatRoomId).
-                gameName(member.getNickname()).
+                gameName(member.getSummonerInfo().getGameName()).
                 tagLine(member.getSummonerInfo().getTagLine()).
                 tier(member.getSummonerInfo().getTier()).
                 rank(member.getSummonerInfo().getRank()).

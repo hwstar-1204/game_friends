@@ -4,25 +4,29 @@ import FriendList from '../components/friends/friends';
 import '../components/friends/friends.css';
 import './template.css';
 import { useNavigate } from 'react-router-dom';
+import AccountChangeModal from '../components/modals/accountChange';
+import FriendRequestModal from '../components/modals/friendRequests';
+import LolConnectModal from '../components/modals/lolConnect';
 
 function Template({ children, friendsData }) {
   const [chatWindow, setChatWindow] = useState(null);
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [modalType, setModalType] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     setIsLoggedIn(!!token);
   }, []);
 
-  const handleChat = (friendName, friendTier) => {
+  const handleChat = (friendNickname, friendTier) => {
     if (chatWindow && !chatWindow.closed) {
-      chatWindow.location.href = `/chat?friend=${friendName}&tier=${friendTier}`;
+      chatWindow.location.href = `/chat?friend=${friendNickname}&tier=${friendTier}`;
       chatWindow.focus();
     } else {
       const newChatWindow = window.open(
-        `/chat?friend=${friendName}&tier=${friendTier}`,
+        `/chat?friend=${friendNickname}&tier=${friendTier}`,
         '_blank',
         'width=400,height=600,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes'
       );
@@ -31,12 +35,34 @@ function Template({ children, friendsData }) {
     }
   };
 
-  const handleRecord = (friendName) => {
-    navigate(`/record?friend=${friendName}`, { state: { friendsData } });
+  const handleRecord = (friendNickname) => {
+    navigate(`/record?friend=${friendNickname}`, { state: { friendsData } });
+  };
+
+  const handleChampionInfo = () => {
+    navigate('/champion', { state: { friendsData } });
   };
 
   const handleSidebarClose = () => {
     setSidebarVisible(false);
+  };
+
+  const handleModalSubmit = (value) => {
+    if (modalType === 'nickname') {
+      alert(`닉네임이 "${value}"(으)로 변경되었습니다.`);
+    } else if (modalType === 'password') {
+      alert('비밀번호가 변경되었습니다.');
+    }
+    setModalType(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('gameName');
+    localStorage.removeItem('tagLine');
+    setIsLoggedIn(false);
+    setSidebarVisible(false);
+    navigate('/');
   };
 
   return (
@@ -48,10 +74,17 @@ function Template({ children, friendsData }) {
         </div>
         <div className="header-right">
           <button 
-            className="profile-icon-test" 
+            className="profile-icon" 
             onClick={() => setSidebarVisible(!sidebarVisible)}
           >
             메뉴
+          </button>
+
+          <button 
+            className="champion-info-icon"
+            onClick={handleChampionInfo}
+          >
+            챔피언 정보
           </button>
 
           <button 
@@ -71,11 +104,55 @@ function Template({ children, friendsData }) {
       {sidebarVisible && (
         <div className="sidebar" onClick={(e) => e.stopPropagation()}>
           <h3 className="sidebar-username">{isLoggedIn ? '내 닉네임' : '게스트'}</h3>
-          <button className="sidebar-button-nickname" onClick={() => alert('닉네임 변경')}>닉네임 변경</button>
-          <button className="sidebar-button-password" onClick={() => alert('비밀번호 변경')}>비밀번호 변경</button>
-          <button className="sidebar-button-logout" onClick={() => { setIsLoggedIn(false); setSidebarVisible(false); }}>로그아웃</button>
+          <button 
+            className="sidebar-button-nickname" 
+            onClick={() => handleRecord('내 닉네임')} // () 안의 닉네임을 전적 검색으로 전달
+          >
+            내 계정
+          </button>
+          <button 
+            className="sidebar-button-nickname" 
+            onClick={() => setModalType('nickname')}
+          >
+            닉네임 변경
+          </button>
+          <button 
+            className="sidebar-button-password" 
+            onClick={() => setModalType('password')}
+          >
+            비밀번호 변경
+          </button>
+          <button 
+            className="sidebar-button-request-friends"
+            onClick={() => setModalType('request-friends')}
+          >
+            친구 요청 대기
+          </button>
+          <button 
+            className="sidebar-button-lol-connect" 
+            onClick={() => setModalType('lol-connect')}
+          >
+            계정 연동
+          </button>
+
+          <button className="sidebar-button-logout" onClick={handleLogout}>로그아웃</button>
           <button className="close-button" onClick={handleSidebarClose}>X</button>
         </div>
+      )}
+      {modalType === 'lol-connect' ? (
+        <LolConnectModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType === 'request-friends' ? (
+        <FriendRequestModal
+          onClose={() => setModalType(null)}
+        />
+      ) : modalType && (
+        <AccountChangeModal 
+          type={modalType} 
+          onClose={() => setModalType(null)} 
+          onSubmit={handleModalSubmit} 
+        />
       )}
     </div>
   );

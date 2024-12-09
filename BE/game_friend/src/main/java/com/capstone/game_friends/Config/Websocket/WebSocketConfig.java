@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
         registry.addEndpoint("/ws")
                 .addInterceptors(new CustomHandshakeInterceptor())
-                .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins("http://localhost:8080", "http://localhost:3000")
                 .withSockJS();
     }
 
