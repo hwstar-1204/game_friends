@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 import { login } from '../../utils/accontApi';
+import { getUserInfo, getSummonerInfoByNickname } from '../../utils/utilsApi';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -20,7 +21,14 @@ function LoginPage() {
       const response = await login(email, password);
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
-      
+
+      const userInfo = await getUserInfo();
+      localStorage.setItem('email', userInfo.email);
+      localStorage.setItem('nickname', userInfo.nickname);
+
+      const summonerInfo = await getSummonerInfoByNickname(userInfo.nickname);
+      localStorage.setItem('gameName', summonerInfo.gameName);
+      localStorage.setItem('tagLine', summonerInfo.tagLine);
       navigate('/');
       console.log(response);
     } catch (error) {
