@@ -22,7 +22,6 @@ function LoginPage() {
       localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
       
       navigate('/');
-      alert('로그인 성공');
       console.log(response);
     } catch (error) {
       alert('로그인 실패');
