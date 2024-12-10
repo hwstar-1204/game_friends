@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +47,7 @@ public class SummonerService {
         result.setLeagueInfo(leagueInfo);
 
         member.setSummonerInfo(SummonerInfo.Info(result));
+        member.setProfileimage(result.getProfileIconId());
         member.setRole(Role.ROLE_USER);
 
         memberRepository.save(member);
@@ -102,6 +105,7 @@ public class SummonerService {
             JsonNode node = objectMapper.readTree(jsonResponse);
             String summonerId = node.get("id").asText();
             result = objectMapper.readValue(jsonResponse, SummonerResponseDTO.class);
+            result.setProfileIconId(profileImageUrl(result.getProfileIconId()));
             result.setSummonerId(summonerId);
             return result;
 
@@ -119,8 +123,9 @@ public class SummonerService {
 
     // 소환사 닉네임과 태그 라인으로 소환사 고유 PuuId 요청 Url
     public String PuuIdRequestUrl(PuuIdRequestDTO requestDTO) {
+        String encodeGameName = URLEncoder.encode(requestDTO.getGameName(), StandardCharsets.UTF_8);
         return String.format(RiotConstant.PUUID_REQUEST_URL,
-                requestDTO.getGameName(),
+                encodeGameName,
                 requestDTO.getTagLine(),
                 apiKey);
     }
@@ -130,5 +135,10 @@ public class SummonerService {
         return String.format(RiotConstant.LEAGUE_REQUEST_URL,
                 summonerId,
                 apiKey);
+    }
+
+    //
+    public String profileImageUrl(String profileImageId) {
+        return String.format(RiotConstant.PROFILE_IMAGE_URL, profileImageId);
     }
 }
