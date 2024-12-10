@@ -74,13 +74,6 @@ function Template({ children, friendsData }) {
         </div>
         <div className="header-right">
           <button 
-            className="profile-icon" 
-            onClick={() => setSidebarVisible(!sidebarVisible)}
-          >
-            메뉴
-          </button>
-
-          <button 
             className="champion-info-icon"
             onClick={handleChampionInfo}
           >
@@ -89,10 +82,17 @@ function Template({ children, friendsData }) {
 
           <button 
             className="profile-icon" 
-            onClick={() => window.location.href = isLoggedIn ? '/profile' : '/login'}
+            onClick={() => {
+              if (isLoggedIn) {
+                setSidebarVisible(!sidebarVisible); // 사이드바 표시/숨김 토글
+              } else {
+                window.location.href = '/login'; // 로그인 페이지로 이동
+              }
+            }}
           >
             {isLoggedIn ? '프로필' : '로그인'}
           </button>
+
         </div>
       </header>
       <div className="main-contents" onClick={(e) => sidebarVisible && setSidebarVisible(false)}>
