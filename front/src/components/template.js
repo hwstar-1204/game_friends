@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import FriendList from '../components/friends/friends';
 import '../components/friends/friends.css';
 import './template.css';
+import { logout } from '../utils/accontApi';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
 import FriendRequestModal from '../components/modals/friendRequests';
@@ -57,9 +58,7 @@ function Template({ children, friendsData }) {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('gameName');
-    localStorage.removeItem('tagLine');
+    logout();
     setIsLoggedIn(false);
     setSidebarVisible(false);
     navigate('/');

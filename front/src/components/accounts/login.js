@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import apiClient from '../../utils/api';
+import { login } from '../../utils/accontApi';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
+      const response = await login(email, password);
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
       
