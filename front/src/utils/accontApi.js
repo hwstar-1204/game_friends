@@ -16,5 +16,19 @@ const logout = async () => {
 //   return response;
 };
 
-export { register, login, logout };
+const changeNickname = async (email, nickname) => {
+    const response = await apiClient.post('/auth/change/nickname', {
+        email: email, newNickname: nickname 
+    });
+    return response;
+};
+
+const changePassword = async (email, prePassword, newPassword) => {
+    const response = await apiClient.post('/auth/change/password', {
+        email, prePassword, newPassword 
+    });
+    return response;
+};
+
+export { register, login, logout, changeNickname, changePassword };
 

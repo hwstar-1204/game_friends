@@ -2,38 +2,27 @@
 import React, { useState } from 'react';
 import './accountChange.css';
 
-function AccountChangeModal({ type, onClose, onSubmit, currentPassword }) {
+function AccountChangeModal({ type, onClose, onSubmit}) {
   const [nickname, setNickname] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [prePassword, setPrePassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = () => {
     if (type === 'nickname') {
-      if (nickname.trim() === '' || password.trim() === '') {
-        alert('닉네임과 비밀번호를 모두 입력해주세요.');
+      if (nickname.trim() === '' || email.trim() === '') {
+        alert('닉네임과 이메일을 모두 입력해주세요.');
         return;
       }
-      if (password !== currentPassword) {
-        alert('현재 비밀번호가 일치하지 않습니다.');
-        return;
-      }
-      onSubmit({ nickname });
+      onSubmit({ email,nickname });
       onClose();
+
     } else if (type === 'password') {
-      if (password.trim() === '' || newPassword.trim() === '' || confirmPassword.trim() === '') {
+      if (email.trim() === '' || prePassword.trim() === '' || newPassword.trim() === '') {
         alert('모든 필드를 입력해주세요.');
         return;
       }
-      if (password !== currentPassword) {
-        alert('현재 비밀번호가 일치하지 않습니다.');
-        return;
-      }
-      if (newPassword !== confirmPassword) {
-        alert('새 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
-        return;
-      }
-      onSubmit({ newPassword });
+      onSubmit({ email, prePassword, newPassword });
       onClose();
     }
   };
@@ -45,38 +34,38 @@ function AccountChangeModal({ type, onClose, onSubmit, currentPassword }) {
         {type === 'nickname' && (
           <>
             <input
+              type="email"
+              placeholder="이메일 입력"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
               type="text"
               placeholder="새 닉네임 입력"
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="현재 비밀번호 입력"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
             />
           </>
         )}
         {type === 'password' && (
           <>
             <input
-              type="password"
-              placeholder="현재 비밀번호 입력"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="email"
+              placeholder="이메일 입력"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
-              placeholder="새 비밀번호 입력"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="현재 비밀번호 입력"
+              value={prePassword}
+              onChange={(e) => setPrePassword(e.target.value)}
             />
             <input
               type="password"
               placeholder="새 비밀번호 확인"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
             />
           </>
         )}

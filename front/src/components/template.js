@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import FriendList from '../components/friends/friends';
 import '../components/friends/friends.css';
 import './template.css';
-import { logout } from '../utils/accontApi';
+import { logout, changeNickname, changePassword } from '../utils/accontApi';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
 import FriendRequestModal from '../components/modals/friendRequests';
@@ -48,10 +48,27 @@ function Template({ children, friendsData }) {
     setSidebarVisible(false);
   };
 
-  const handleModalSubmit = (value) => {
+  const handleModalSubmit = async (data) => {
     if (modalType === 'nickname') {
-      alert(`닉네임이 "${value}"(으)로 변경되었습니다.`);
+      const email = data.email;
+      const nickname = data.nickname;
+      
+      try {
+        const response = await changeNickname(email, nickname);
+        console.log(response);
+      } catch (error) {
+        alert('닉네임 변경에 실패했습니다.');
+      }
+
+      alert(`닉네임이 "${nickname}"(으)로 변경되었습니다.`);
+    
     } else if (modalType === 'password') {
+      try {
+        const response = await changePassword(data.email, data.prePassword, data.newPassword);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
       alert('비밀번호가 변경되었습니다.');
     }
     setModalType(null);
