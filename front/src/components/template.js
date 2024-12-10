@@ -15,6 +15,7 @@ function Template({ children, friendsData }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [modalType, setModalType] = useState(null);
+  const userNickname = localStorage.getItem('nickname');
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -119,12 +120,18 @@ function Template({ children, friendsData }) {
       </div>
       {sidebarVisible && (
         <div className="sidebar" onClick={(e) => e.stopPropagation()}>
-          <h3 className="sidebar-username">{isLoggedIn ? '내 닉네임' : '게스트'}</h3>
+          <h3 className="sidebar-username">{isLoggedIn ? userNickname : '게스트'}</h3>
+          <button 
+            className="sidebar-button-profile" 
+            onClick={() => navigate('/profile')} // () 안의 닉네임을 전적 검색으로 전달
+          >
+            내 프로필
+          </button>
           <button 
             className="sidebar-button-nickname" 
-            onClick={() => handleRecord('내 닉네임')} // () 안의 닉네임을 전적 검색으로 전달
+            onClick={() => handleRecord(userNickname)} // () 안의 닉네임을 전적 검색으로 전달
           >
-            내 계정
+            내 전적
           </button>
           <button 
             className="sidebar-button-nickname" 
