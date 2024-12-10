@@ -107,7 +107,7 @@ function Template({ children, friendsData }) {
               }
             }}
           >
-            {isLoggedIn ? '프로필' : '로그인'}
+            {isLoggedIn ? '메뉴' : '로그인'}
           </button>
 
         </div>

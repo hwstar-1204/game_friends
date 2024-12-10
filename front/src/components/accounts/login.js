@@ -23,14 +23,18 @@ function LoginPage() {
       localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
 
       const userInfo = await getUserInfo();
-      localStorage.setItem('email', userInfo.email);
-      localStorage.setItem('nickname', userInfo.nickname);
+      localStorage.setItem('email', userInfo.email || '');
+      localStorage.setItem('nickname', userInfo.nickname || '');
 
-      const summonerInfo = await getSummonerInfoByNickname(userInfo.nickname);
-      localStorage.setItem('gameName', summonerInfo.gameName);
-      localStorage.setItem('tagLine', summonerInfo.tagLine);
+      if (!userInfo?.nickname) {
+        const summonerInfo = await getSummonerInfoByNickname(userInfo.nickname);
+        localStorage.setItem('gameName', summonerInfo.gameName || '');
+        localStorage.setItem('tagLine', summonerInfo.tagLine || '');
+      }
+
+      // storeUserInfo();
       navigate('/');
-      console.log(response);
+      
     } catch (error) {
       alert('로그인 실패');
       console.error('로그인 오류:', error);
