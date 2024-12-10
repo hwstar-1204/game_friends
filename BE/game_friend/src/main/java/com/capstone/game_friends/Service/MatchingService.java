@@ -62,8 +62,8 @@ public class MatchingService {
 //            messagingTemplate.convertAndSend("/topic/match/" + user2, responseDTO2.of(user2,chatroomid));
 
             // 매칭 결과 전송
-            messagingTemplate.convertAndSend("/topic/match/" + user1, MatchingResponseDTO.of(member1,chatroomid));
-            messagingTemplate.convertAndSend("/topic/match/" + user2, MatchingResponseDTO.of(member2,chatroomid));
+            messagingTemplate.convertAndSend("/topic/match/" + user2, MatchingResponseDTO.of(member1,chatroomid));
+            messagingTemplate.convertAndSend("/topic/match/" + user1, MatchingResponseDTO.of(member2,chatroomid));
             System.out.println("매칭 성공: " + user1 + "와 " + user2 + "가 매칭되었습니다.");
         }
     }
