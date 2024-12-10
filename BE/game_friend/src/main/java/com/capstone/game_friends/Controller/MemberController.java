@@ -1,6 +1,5 @@
 package com.capstone.game_friends.Controller;
 
-import com.capstone.game_friends.DTO.ChangePwdRequestDTO;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
 import com.capstone.game_friends.DTO.Riot.SummonerNameDTO;
 import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
@@ -34,11 +33,5 @@ public class MemberController {
         return ResponseEntity.ok(new SummonerNameDTO(
                 member.getSummonerInfo().getGameName(),
                 member.getSummonerInfo().getTagLine()));
-    }
-
-    // 비밀번호 변경 ( 미완 )
-    @PostMapping("/password")
-    public ResponseEntity<MemberResponseDTO> setMemberPassword(@RequestBody ChangePwdRequestDTO requestDto) {
-        return ResponseEntity.ok(memberService.changeMemberPassword(requestDto.getPrePassword(), requestDto.getNewPassword()));
     }
 }
