@@ -120,14 +120,18 @@ function MainPage() {
             <span>.RGF</span>
           </div>
         </div>
-        <img src={`/img/banner.png`} alt="웹 페이지 배너" className="banner"/>
-
-        <button
-          className="matching-button" 
+        <div
+          className="banner"
           onClick={handleTest}
-        >
-          게임 유저 매칭 시작
-        </button>
+          style={{
+            backgroundImage: "url('/img/banner.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        ><div>랜덤 매칭을 시작하려면 클릭하세요.</div></div>
+
+
+        
         
         <div className="player-cards-banner">
           <h2>플레이어 추천</h2>
