@@ -45,6 +45,7 @@ public class SummonerService {
         result.setLeagueInfo(leagueInfo);
 
         member.setSummonerInfo(SummonerInfo.Info(result));
+        member.setProfileimage(result.getProfileIconId());
         member.setRole(Role.ROLE_USER);
 
         memberRepository.save(member);
@@ -102,6 +103,7 @@ public class SummonerService {
             JsonNode node = objectMapper.readTree(jsonResponse);
             String summonerId = node.get("id").asText();
             result = objectMapper.readValue(jsonResponse, SummonerResponseDTO.class);
+            result.setProfileIconId(profileImageUrl(result.getProfileIconId()));
             result.setSummonerId(summonerId);
             return result;
 
@@ -130,5 +132,10 @@ public class SummonerService {
         return String.format(RiotConstant.LEAGUE_REQUEST_URL,
                 summonerId,
                 apiKey);
+    }
+
+    //
+    public String profileImageUrl(String profileImageId) {
+        return String.format(RiotConstant.PROFILE_IMAGE_URL, profileImageId);
     }
 }
