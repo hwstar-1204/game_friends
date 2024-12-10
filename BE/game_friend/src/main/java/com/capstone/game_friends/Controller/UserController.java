@@ -4,6 +4,7 @@ import com.capstone.game_friends.Config.SecurityUtil;
 import com.capstone.game_friends.DTO.FriendResponseDTO;
 import com.capstone.game_friends.DTO.MemberRequestDTO;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
+import com.capstone.game_friends.DTO.RandomProfileDTO;
 import com.capstone.game_friends.Domain.Status;
 import com.capstone.game_friends.Service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
@@ -50,12 +51,17 @@ public class UserController {
         Long senderId = requestBody.get("friendId");
         customUserDetailsService.friendStatus(SecurityUtil.getCurrentMemberId(),senderId, Status.accepted);
     }
-
     @PostMapping("/declinedfriend") //친구 거절
     @ResponseStatus(HttpStatus.OK)
     public void declinedFriend(@RequestBody Map<String, Long> requestBody){
         Long senderId = requestBody.get("friendId");
         customUserDetailsService.friendStatus(SecurityUtil.getCurrentMemberId(),senderId,Status.declined);
+    }
+
+    @GetMapping("random/{Number}")
+    public List<RandomProfileDTO> getRandomProfile(@PathVariable int Number){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        return customUserDetailsService.getRandomMembers(memberId,Number);
     }
 
 }

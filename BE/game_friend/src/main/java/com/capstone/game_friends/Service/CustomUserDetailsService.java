@@ -3,6 +3,7 @@ package com.capstone.game_friends.Service;
 import com.capstone.game_friends.DTO.FriendResponseDTO;
 import com.capstone.game_friends.DTO.MemberRequestDTO;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
+import com.capstone.game_friends.DTO.RandomProfileDTO;
 import com.capstone.game_friends.Domain.Friends;
 import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Domain.Status;
@@ -77,6 +78,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
     public void friendStatus(Long receiverUserId, Long senderUserId, Status status){
         friendsRepository.updateStatus(senderUserId, receiverUserId, status);
+    }
+
+    public List<RandomProfileDTO> getRandomMembers(Long memberId,int count) {
+        return memberRepository.findRandomEntitiesExcludingId( memberId, count).stream().map(RandomProfileDTO::of).toList();
     }
 
 
