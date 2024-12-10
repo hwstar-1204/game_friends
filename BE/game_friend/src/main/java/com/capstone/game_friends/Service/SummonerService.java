@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Service
 @RequiredArgsConstructor
@@ -121,8 +123,9 @@ public class SummonerService {
 
     // 소환사 닉네임과 태그 라인으로 소환사 고유 PuuId 요청 Url
     public String PuuIdRequestUrl(PuuIdRequestDTO requestDTO) {
+        String encodeGameName = URLEncoder.encode(requestDTO.getGameName(), StandardCharsets.UTF_8);
         return String.format(RiotConstant.PUUID_REQUEST_URL,
-                requestDTO.getGameName(),
+                encodeGameName,
                 requestDTO.getTagLine(),
                 apiKey);
     }
