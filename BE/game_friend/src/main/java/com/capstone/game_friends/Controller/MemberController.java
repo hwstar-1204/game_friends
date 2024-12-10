@@ -1,8 +1,9 @@
 package com.capstone.game_friends.Controller;
 
-import com.capstone.game_friends.DTO.ChangePwdRequestDTO;
 import com.capstone.game_friends.DTO.MemberResponseDTO;
+import com.capstone.game_friends.DTO.Riot.SummonerNameDTO;
 import com.capstone.game_friends.DTO.Riot.SummonerResponseDTO;
+import com.capstone.game_friends.Domain.Member;
 import com.capstone.game_friends.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,12 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getSummoner());
     }
 
-    // 비밀번호 변경 ( 미완 )
-    @PostMapping("/password")
-    public ResponseEntity<MemberResponseDTO> setMemberPassword(@RequestBody ChangePwdRequestDTO requestDto) {
-        return ResponseEntity.ok(memberService.changeMemberPassword(requestDto.getPrePassword(), requestDto.getNewPassword()));
+    // DB에 있는 회원 닉네임으로 라이엇 게임이름, 태그 가져오기
+    @GetMapping("/summoner/name")
+    public ResponseEntity<SummonerNameDTO> getSummonerName(@RequestParam("nickname") String nickname) {
+        Member member = memberService.findByNickname(nickname);
+        return ResponseEntity.ok(new SummonerNameDTO(
+                member.getSummonerInfo().getGameName(),
+                member.getSummonerInfo().getTagLine()));
     }
 }

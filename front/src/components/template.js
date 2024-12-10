@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import FriendList from '../components/friends/friends';
 import '../components/friends/friends.css';
 import './template.css';
+import { logout, changeNickname, changePassword } from '../utils/accontApi';
 import { useNavigate } from 'react-router-dom';
 import AccountChangeModal from '../components/modals/accountChange';
 import FriendRequestModal from '../components/modals/friendRequests';
@@ -14,6 +15,7 @@ function Template({ children, friendsData }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [modalType, setModalType] = useState(null);
+  const userNickname = localStorage.getItem('nickname');
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -47,19 +49,34 @@ function Template({ children, friendsData }) {
     setSidebarVisible(false);
   };
 
-  const handleModalSubmit = (value) => {
+  const handleModalSubmit = async (data) => {
     if (modalType === 'nickname') {
-      alert(`닉네임이 "${value}"(으)로 변경되었습니다.`);
+      const email = data.email;
+      const nickname = data.nickname;
+      
+      try {
+        const response = await changeNickname(email, nickname);
+        console.log(response);
+      } catch (error) {
+        alert('닉네임 변경에 실패했습니다.');
+      }
+
+      alert(`닉네임이 "${nickname}"(으)로 변경되었습니다.`);
+    
     } else if (modalType === 'password') {
+      try {
+        const response = await changePassword(data.email, data.prePassword, data.newPassword);
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
       alert('비밀번호가 변경되었습니다.');
     }
     setModalType(null);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('gameName');
-    localStorage.removeItem('tagLine');
+    logout();
     setIsLoggedIn(false);
     setSidebarVisible(false);
     navigate('/');
@@ -74,13 +91,6 @@ function Template({ children, friendsData }) {
         </div>
         <div className="header-right">
           <button 
-            className="profile-icon" 
-            onClick={() => setSidebarVisible(!sidebarVisible)}
-          >
-            메뉴
-          </button>
-
-          <button 
             className="champion-info-icon"
             onClick={handleChampionInfo}
           >
@@ -89,10 +99,17 @@ function Template({ children, friendsData }) {
 
           <button 
             className="profile-icon" 
-            onClick={() => window.location.href = isLoggedIn ? '/profile' : '/login'}
+            onClick={() => {
+              if (isLoggedIn) {
+                setSidebarVisible(!sidebarVisible); // 사이드바 표시/숨김 토글
+              } else {
+                window.location.href = '/login'; // 로그인 페이지로 이동
+              }
+            }}
           >
-            {isLoggedIn ? '프로필' : '로그인'}
+            {isLoggedIn ? '메뉴' : '로그인'}
           </button>
+
         </div>
       </header>
       <div className="main-contents" onClick={(e) => sidebarVisible && setSidebarVisible(false)}>
@@ -103,12 +120,18 @@ function Template({ children, friendsData }) {
       </div>
       {sidebarVisible && (
         <div className="sidebar" onClick={(e) => e.stopPropagation()}>
-          <h3 className="sidebar-username">{isLoggedIn ? '내 닉네임' : '게스트'}</h3>
+          <h3 className="sidebar-username">{isLoggedIn ? userNickname : '게스트'}</h3>
+          <button 
+            className="sidebar-button-profile" 
+            onClick={() => navigate('/profile')} // () 안의 닉네임을 전적 검색으로 전달
+          >
+            내 프로필
+          </button>
           <button 
             className="sidebar-button-nickname" 
-            onClick={() => handleRecord('내 닉네임')} // () 안의 닉네임을 전적 검색으로 전달
+            onClick={() => handleRecord(userNickname)} // () 안의 닉네임을 전적 검색으로 전달
           >
-            내 계정
+            내 전적
           </button>
           <button 
             className="sidebar-button-nickname" 

@@ -20,7 +20,7 @@ public class SummonerResponseDTO {
     private String puuid;
     private String summonerId;
     private long summonerLevel;
-    private int profileIconId;
+    private String profileIconId;
     private String leagueId;
     private String queueType;
     private String tier;

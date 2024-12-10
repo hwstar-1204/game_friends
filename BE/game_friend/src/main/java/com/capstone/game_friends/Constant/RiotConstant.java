@@ -17,4 +17,5 @@ public class RiotConstant {
     public static final String CHAMPION_DETAIL_REQUEST_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/data/ko_KR/champion/%s.json";
     public static final String SPELL_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/spell/%s";
     public static final String PASSIVE_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/passive/%s";
+    public static final String PROFILE_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/14.23.1/img/profileicon/%s.png";
 }

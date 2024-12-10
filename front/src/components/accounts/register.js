@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apiClient from '../../utils/api';
+import { register } from '../../utils/accontApi';
 import './register.css';
 
 function RegisterPage() {
@@ -22,12 +22,13 @@ function RegisterPage() {
     }
 
     try {
-      const response = await apiClient.post('/auth/signup', {
-        email: email.trim(),
-        password: password,
-        nickname: nickname.trim(),
-        role: "ROLE_USER"
-      });
+      const role = "ROLE_USER";
+      const response = await register(
+        email.trim(),
+        password, 
+        nickname.trim(), 
+        role
+      );
 
       console.log(response);
       alert('회원가입이 완료되었습니다. 이후 홈 [메뉴]에서 계정연동을 진행해주세요.');

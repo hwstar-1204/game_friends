@@ -16,7 +16,6 @@ function RecordPage() {
     const fetchMatchHistory = async () => {
       try {
         const response = await riotApi.matchApi(friendName);
-        console.log('Match history response:', response);
         setMatchHistory(response);
       } catch (error) {
         console.error('Error fetching match history:', error);

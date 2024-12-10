@@ -28,7 +28,7 @@ public class SummonerInfo {
     private float winRating;
     private long revisionDate;
     private long summonerLevel;
-    private int profileIconId;
+    private String profileIconId;
     private int leaguePoints;
     private int wins;
     private int losses;

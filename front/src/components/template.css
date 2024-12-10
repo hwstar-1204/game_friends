@@ -124,7 +124,7 @@ body {
 
 }
 
-.sidebar .sidebar-button-nickname, .sidebar .sidebar-button-password, .sidebar .sidebar-button-request-friends, .sidebar .sidebar-button-lol-connect {
+.sidebar .sidebar-button-nickname, .sidebar-button-profile, .sidebar .sidebar-button-password, .sidebar .sidebar-button-request-friends, .sidebar .sidebar-button-lol-connect {
     width: 100%;
     height: 50px;
     padding: 10px;
