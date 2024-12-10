@@ -85,13 +85,13 @@ function MainPage() {
   };
 
   const handleAddFriend = (player) => {
-    if (!friendsData.some(friend => friend.name === player.name)) {
-      const updatedFriends = [...friendsData, { ...player, status: 'online' }];
-      setFriendsData(updatedFriends);
-      alert(`${player.name} 님이 친구 목록에 추가되었습니다.`);
-    } else {
-      alert(`${player.name} 님은 이미 친구 목록에 있습니다.`);
+    try {
+      const response = friendsApi.requestFriend(player.id);
+      console.log(response);
+    } catch (error) {
+      console.error('Error adding friend:', error);
     }
+
   };
 
   const handleTest = async () => {
