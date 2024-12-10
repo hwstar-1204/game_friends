@@ -49,7 +49,6 @@ function MainPage() {
     };
     fetchFriendsList();
 
-    // TODO: 매칭된 플레이어 데이터를 가져오는 로직 추가
     const fetchRandomUsers = async () => {
       try {
         const response = await getRandomUsersByNumber(5);
@@ -166,7 +165,7 @@ function MainPage() {
                 <p className="player-tagLine">#{player.tagLine}</p>
               </div>
               <div className="player-actions">
-                <button className="player-button">전적 보기</button>
+                <button className="player-button" onClick={() => navigate(`/record?friend=${player.nickname}`)}>전적 보기</button>
                 <button className="player-button" onClick={() => handleChat(player.name, player.tier)}>채팅</button>
                 
                 <button 
