@@ -30,6 +30,7 @@ function FriendRequestsModal({ onClose }) {
                 prevRequests.filter(request => request.id !== friendId)
             );
             alert('친구 요청이 성공적으로 수락되었습니다.');
+            window.location.reload();
         }
     } catch (error) {
         console.error('친구 요청 수락 중 오류:', error);
