@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Template from './template';
 import './main.css';
 import friendsApi from '../utils/friendsApi';
+import { getRandomUsersByNumber } from '../utils/utilsApi';
 import { useNavigate } from 'react-router-dom';
 
 function MainPage() {
@@ -43,14 +44,22 @@ function MainPage() {
         setFriendsData(response);
       } catch (error) {
         console.error('Error fetching friends list:', error);
-        // setFriendsData(testFriendsData); // DB에서 못불러오면 테스트 데이터로 대체
-        setFriendsData([]);
+        setFriendsData(testFriendsData);
       }
     };
     fetchFriendsList();
 
-    // TODO: 매칭된 플레이어 데이터를 가져오는 로직 추가
-    setPlayers(testPlayersData);
+    const fetchRandomUsers = async () => {
+      try {
+        const response = await getRandomUsersByNumber(5);
+        console.log(response);
+        setPlayers(response);
+      } catch (error) {
+        console.error('Error fetching random users:', error);
+        setPlayers(testPlayersData);
+      }
+    };
+    fetchRandomUsers();
   }, []);
 
   const handleSearch = () => {
@@ -76,13 +85,13 @@ function MainPage() {
   };
 
   const handleAddFriend = (player) => {
-    if (!friendsData.some(friend => friend.name === player.name)) {
-      const updatedFriends = [...friendsData, { ...player, status: 'online' }];
-      setFriendsData(updatedFriends);
-      alert(`${player.name} 님이 친구 목록에 추가되었습니다.`);
-    } else {
-      alert(`${player.name} 님은 이미 친구 목록에 있습니다.`);
+    try {
+      const response = friendsApi.requestFriend(player.id);
+      console.log(response);
+    } catch (error) {
+      console.error('Error adding friend:', error);
     }
+
   };
 
   const handleTest = async () => {
@@ -151,8 +160,12 @@ function MainPage() {
                 <p className="player-name">{player.nickname}</p>
                 <img src={`/img/tiers/${player.tier}.png`} alt="티어 이미지" className="player-tier" />
               </div>
+              <div className="player-summonerinfo-row">
+                <p className="player-gameName">{player.gameName}</p>
+                <p className="player-tagLine">#{player.tagLine}</p>
+              </div>
               <div className="player-actions">
-                <button className="player-button">전적 보기</button>
+                <button className="player-button" onClick={() => navigate(`/record?friend=${player.nickname}`)}>전적 보기</button>
                 <button className="player-button" onClick={() => handleChat(player.name, player.tier)}>채팅</button>
                 
                 <button 

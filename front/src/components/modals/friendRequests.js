@@ -9,9 +9,10 @@ function FriendRequestsModal({ onClose }) {
     const fetchFriendRequests = async () => {
       try {
         const response = await friendsApi.getFriendRequests();
-        if (response.length > 0) {
-          setFriendRequests(response);
+        if (response.length === 0) {
+          return;
         }
+        setFriendRequests(response);
       } catch (error) {
         console.error('친구 요청 목록을 불러오는데 실패했습니다:', error);
         alert('친구 요청 목록을 불러오는데 실패했습니다. 다시 시도해주세요.');

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import websocketService from '../../utils/websocket';
+import friendsApi from '../../utils/friendsApi';
 import './MatchingComponent.css';
 
 const MatchingComponent = () => {
@@ -166,6 +167,16 @@ const MatchingComponent = () => {
         }
     };
 
+    const handleAddFriend = async () => {
+        try {
+            const response = friendsApi.requestFriend(matchedUser.id);
+            alert('친구 추가 요청 완료');
+            console.log(response);
+        } catch (error) {
+            console.error('Error adding friend:', error);
+        }
+    };
+
     return (
         <div className="matching-container">
             <h2>매칭 시스템</h2>
@@ -231,6 +242,12 @@ const MatchingComponent = () => {
                                 placeholder="메시지를 입력하세요..."
                                 className="message-input"
                             />
+                            <button 
+                                onClick={handleAddFriend}
+                                className="add-friend-button"
+                            >
+                                친구 추가
+                            </button>
                             <button 
                                 onClick={handleSendMessage}
                                 className="send-button"

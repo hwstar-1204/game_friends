@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import apiClient from '../../utils/api';
+import { login } from '../../utils/accontApi';
+import { getUserInfo, getSummonerInfoByNickname } from '../../utils/utilsApi';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -17,13 +18,23 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
+      const response = await login(email, password);
       localStorage.setItem('accessToken', response.accessToken);
       localStorage.setItem('tokenExpiresIn', response.tokenExpiresIn);
-      
+
+      const userInfo = await getUserInfo();
+      localStorage.setItem('email', userInfo.email || '');
+      localStorage.setItem('nickname', userInfo.nickname || '');
+
+      if (!userInfo?.nickname) {
+        const summonerInfo = await getSummonerInfoByNickname(userInfo.nickname);
+        localStorage.setItem('gameName', summonerInfo.gameName || '');
+        localStorage.setItem('tagLine', summonerInfo.tagLine || '');
+      }
+
+      // storeUserInfo();
       navigate('/');
-      alert('로그인 성공');
-      console.log(response);
+      
     } catch (error) {
       alert('로그인 실패');
       console.error('로그인 오류:', error);

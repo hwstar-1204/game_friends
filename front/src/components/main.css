@@ -188,6 +188,17 @@
   margin-top: 10px;
 }
 
+.player-summonerinfo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.player-summonerinfo-row p {
+  margin: 0px;
+  display: inline;
+}
+
 .player-name {
   font-size: 18px;
   font-weight: bold;

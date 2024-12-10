@@ -14,11 +14,13 @@ public class RandomProfileDTO {
     String rank;
     String gameName;
     String tagLine;
+    String profileImage;
 
     public static RandomProfileDTO of (Member member){
         return RandomProfileDTO.builder().
                 id(member.getId()).
                 nickname(member.getNickname()).
+                profileImage(member.getProfileimage()).
                 tier(member.getSummonerInfo().getTier()).
                 rank(member.getSummonerInfo().getRank()).
                 gameName(member.getSummonerInfo().getGameName()).

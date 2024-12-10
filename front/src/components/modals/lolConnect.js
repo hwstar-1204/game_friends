@@ -11,9 +11,9 @@ function LolConnectModal({ onClose }) {
 
     try {
       // URL 인코딩을 사용하여 한글 닉네임 처리
-      const encodedGameName = encodeURIComponent(gameName);
-      console.log(encodedGameName, tagLine);
-      const response = await riotApi.summonerApi(encodedGameName, tagLine);
+      // const encodedGameName = encodeURIComponent(gameName);
+      // console.log(encodedGameName, tagLine);
+      const response = await riotApi.summonerApi(gameName, tagLine);
       console.log(response);
       localStorage.setItem('gameName', response.gameName);
       localStorage.setItem('tagLine', response.tagLine);
