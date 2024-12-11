@@ -107,7 +107,7 @@ function Template({ children, friendsData }) {
               }
             }}
           >
-            {isLoggedIn ? '메뉴' : '로그인'}
+            {isLoggedIn ? `${userNickname}` : '로그인'}
           </button>
 
         </div>
@@ -122,16 +122,10 @@ function Template({ children, friendsData }) {
         <div className="sidebar" onClick={(e) => e.stopPropagation()}>
           <h3 className="sidebar-username">{isLoggedIn ? userNickname : '게스트'}</h3>
           <button 
-            className="sidebar-button-profile" 
-            onClick={() => navigate('/profile')} // () 안의 닉네임을 전적 검색으로 전달
-          >
-            내 프로필
-          </button>
-          <button 
             className="sidebar-button-nickname" 
             onClick={() => handleRecord(userNickname)} // () 안의 닉네임을 전적 검색으로 전달
           >
-            내 전적
+            내 계정
           </button>
           <button 
             className="sidebar-button-nickname" 

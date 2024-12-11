@@ -26,8 +26,9 @@ function LoginPage() {
       localStorage.setItem('email', userInfo.email || '');
       localStorage.setItem('nickname', userInfo.nickname || '');
 
-      if (!userInfo?.nickname) {
+      if (userInfo?.nickname) {
         const summonerInfo = await getSummonerInfoByNickname(userInfo.nickname);
+        console.log(summonerInfo);
         localStorage.setItem('gameName', summonerInfo.gameName || '');
         localStorage.setItem('tagLine', summonerInfo.tagLine || '');
       }
